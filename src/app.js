@@ -1,9 +1,9 @@
 /** @jsx React.DOM */
 /* jshint ignore:start */
 var React = require('react')
-	, Container = require('./container');
+	, Container = require('./components/container');
 
-React.renderComponent(
+React.render(
 	<Container />
-	, document.getElementById('content')
+	, document.getElementById('app')
 );

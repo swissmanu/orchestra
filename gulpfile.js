@@ -9,7 +9,7 @@ var gulp = require('gulp')
 
 gulp.task('connect-dev', devServer.server({
 	root: ['src']
-	, port: 8989
+	, port: 8080
 	, livereload: true
 }));
 

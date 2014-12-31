@@ -1,8 +1,7 @@
 var express = require('express')
-	, app = express();
+	, app = express()
+	, join = require('path').join
 
-app.get('/', function(req, res) {
-	res.send('ok client');
-});
+app.use(express.static(join(__dirname, 'src')));
 
 module.exports = app;
