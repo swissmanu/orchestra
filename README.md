@@ -1,4 +1,4 @@
-# orchestra-api
+# orchestra-client
 
 An HTTP client for [orchestra-api](https://github.com/swissmanu/orchestra-api).
 
