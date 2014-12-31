@@ -8,6 +8,14 @@
   "scripts": {
     "postinstall": "node_modules/.bin/gulp compress"
   },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/swissmanu/orchestra-client"
+  },
+  "bugs": {
+    "url": "https://github.com/swissmanu/orchestra-client/issues"
+  },
+  "homepage": "https://github.com/swissmanu/orchestra-client",
   "dependencies": {
     "express": "^4.10.6"
   },
