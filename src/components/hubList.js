@@ -11,7 +11,7 @@ var HubList = React.createClass({
 	, componentDidMount: function() {
 		var self = this;
 		
-		$.get('http://localhost:8080/api/hubs', function(hubs) {
+		$.get('/api/hubs', function(hubs) {
 			self.setState({ hubs: hubs });
 		});
 	}
