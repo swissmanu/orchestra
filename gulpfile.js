@@ -11,6 +11,11 @@ gulp.task('connect-dev', devServer.server({
 	root: ['src']
 	, port: 8080
 	, livereload: true
+	, middleware: function() {
+		return [
+			require('../api/index.js')
+		];
+	}
 }));
 
 gulp.task('connect-pro', proServer.server({
@@ -58,7 +63,7 @@ gulp.task('styles', function() {
 gulp.task('base', ['static', /*'config', 'fonts', 'images',*/ 'styles']);
 
 gulp.task('scripts', ['lint'], function() {
-	return gulp.src(['src/app.js'])
+	return gulp.src(['src/app/app.js'])
 		.pipe($.browserify({
 			transform: ['reactify']
 			, extensions: ['.jsx']
@@ -96,7 +101,7 @@ gulp.task('wiredep', function() {
 });
 
 gulp.task('browserify', ['lint'], function() {
-	return gulp.src(['src/app.js'])
+	return gulp.src(['src/app/app.js'])
 		.pipe($.browserify({
 			transform: ['reactify']
 			, extensions: ['.jsx']
