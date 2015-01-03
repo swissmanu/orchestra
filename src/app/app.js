@@ -11,17 +11,12 @@ var React = require('react')
 	, Link = Router.Link;
 
 var App = React.createClass({
-	getInitialState: function() {
-		return {
-			selectedHub: undefined
-		};
-	}
 	
-	, render: function() {
+	render: function() {
 		return (
 			<section>
 				<aside>
-					<HubList selectedHub={ this.state.selectedHub } />
+					<HubList />
 				</aside>
 				<div>
 					<RouteHandler />
@@ -32,11 +27,11 @@ var App = React.createClass({
 });
 
 var routes = (
-	<Route handler={App}>
+	<Route handler={App} path="/">
 		<Route name="hub" path="/hub/:uuid" handler={ HubActivities } />
 	</Route>
 );
 
-Router.run(routes, Router.HistoryLocation, function(Handler) {
+Router.run(routes/*, Router.HistoryLocation*/, function(Handler) {
 	React.render(<Handler/>, document.body)
 });

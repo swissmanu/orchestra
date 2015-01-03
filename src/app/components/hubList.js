@@ -1,13 +1,11 @@
 /** @jsx React.DOM */
 var React = require('react')
-	, $ = require('jquery')
 	, Reflux = require('reflux')
 	, hubStore = require('../stores/hubStore')
 	, hubActions = require('../actions/hubActions')
 	, Link = require('react-router').Link;
 
 var HubList = React.createClass({
-	
 	mixins: [Reflux.connect(hubStore, 'hubs')]
 	
 	, getInitialState: function() {
@@ -18,7 +16,6 @@ var HubList = React.createClass({
 	
 	, componentDidMount: function() {
 		hubActions.reloadHubs();
-		
 	}
 	
 	, render: function() {
