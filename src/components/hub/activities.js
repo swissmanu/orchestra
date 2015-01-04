@@ -37,14 +37,11 @@ module.exports = React.createClass({
 	, render: function() {
 		/* jshint ignore:start */
 		return (
-			<div className={ this.props.className }>
-				<h2>Activities for { this.state.hub.friendlyName }</h2>
-				<ol>{
-					this.state.activities.map(function(activity) {
-						return <li key={ activity.id }>{ activity.label }</li>
-					})
-				}</ol>
-			</div>
+			<ol className={ this.props.className }>{
+				this.state.activities.map(function(activity) {
+					return <li key={ activity.id } className="item"><a href="#">{ activity.label }</a></li>
+				})
+			}</ol>
 		);
 		/* jshint ignore:end */
 	}

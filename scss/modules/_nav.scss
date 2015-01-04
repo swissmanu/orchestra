@@ -1,10 +1,15 @@
 .nav {
-	color: white;
-  	background-color: #666;
-  
-	a { color: white; }
-  
+	background-color: #666;
+
 	&.is-second-level {
 		background-color: #bbb;
+	}
+  
+	.item {
+		a {
+			display: block;
+			padding: 10px;
+			color: #fff;
+		}
 	}
 }
