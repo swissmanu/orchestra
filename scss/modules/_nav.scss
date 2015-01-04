@@ -1,6 +1,15 @@
 .nav {
 	$nav-first-level-background-color: #666;
+	$nav-first-level-color: #fff;
+	$nav-first-level-selected-color: $nav-first-level-color;
+  
 	$nav-second-level-background-color: #bbb;
+	$nav-second-level-color: $nav-first-level-color;
+	$nav-second-level-selected-background-color: #fff;
+	$nav-second-level-selected-color: $nav-first-level-color;
+  
+	$nav-first-level-selected-background-color: $nav-second-level-background-color;
+	
   
 	background-color: $nav-first-level-background-color;
   
@@ -8,20 +17,26 @@
 		a {
 			display: block;
 			padding: 10px;
-			color: #fff;
+			color: $nav-first-level-color;
 		}
 		
 		&.is-selected {
-			background-color: $nav-second-level-background-color;
+			a { color: $nav-first-level-selected-color; }
+			background-color: $nav-first-level-selected-background-color;
 		}
 	}
 
 	&.is-second-level {
 		background-color: $nav-second-level-background-color;
-	  
-		.item.is-selected {
-			background-color: #fff;
-			color: #000;
+
+		.item {
+			a { color: $nav-second-level-color; }
+
+			.is-selected {
+				a { color: $nav-second-level-selected-color; }
+				background-color: $nav-second-level-selected-background-color;
+				color: $nav-second-level-selected-color;
+			}
 		}
 	}
 }
