@@ -3,10 +3,14 @@ var React = require('react')
 	, Reflux = require('reflux')
 	, hubStore = require('../stores/hubStore')
 	, hubActions = require('../actions/hubActions')
-	, Link = require('react-router').Link;
+	, Router = require('react-router')
+	, Link = Router.Link;
 
 var HubList = React.createClass({
-	mixins: [Reflux.connect(hubStore, 'hubs')]
+	mixins: [
+		Reflux.connect(hubStore, 'hubs')
+		, Router.State
+	]
 	
 	, getInitialState: function() {
 		return {
@@ -19,11 +23,19 @@ var HubList = React.createClass({
 	}
 	
 	, render: function() {
+		var uuidOfSelectedHub = this.getParams().uuid;
+		
 		/* jshint ignore:start */
 		return(
 			<ul className={ this.props.className }>{
 				this.state.hubs.map(function(hub) {
-					return <li key={ hub.uuid } className="item"><Link to="hub" params={ hub }>{ hub.friendlyName }</Link></li>
+					var classNames = 'item';
+					
+					if(uuidOfSelectedHub === hub.uuid) {
+						classNames += ' is-selected';
+					}
+					
+					return <li key={ hub.uuid } className={ classNames }><Link to="hub" params={ hub }>{ hub.friendlyName }</Link></li>
 				})
 			}</ul>
 		);

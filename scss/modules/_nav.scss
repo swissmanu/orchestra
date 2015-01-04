@@ -1,15 +1,27 @@
 .nav {
-	background-color: #666;
-
-	&.is-second-level {
-		background-color: #bbb;
-	}
+	$nav-first-level-background-color: #666;
+	$nav-second-level-background-color: #bbb;
+  
+	background-color: $nav-first-level-background-color;
   
 	.item {
 		a {
 			display: block;
 			padding: 10px;
 			color: #fff;
+		}
+		
+		&.is-selected {
+			background-color: $nav-second-level-background-color;
+		}
+	}
+
+	&.is-second-level {
+		background-color: $nav-second-level-background-color;
+	  
+		.item.is-selected {
+			background-color: #fff;
+			color: #000;
 		}
 	}
 }
