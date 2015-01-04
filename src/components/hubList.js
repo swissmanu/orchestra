@@ -19,13 +19,15 @@ var HubList = React.createClass({
 	}
 	
 	, render: function() {
+		/* jshint ignore:start */
 		return(
-			<ul>{
+			<ul className={ this.props.className }>{
 				this.state.hubs.map(function(hub) {
 					return <li key={ hub.uuid }><Link to="hub" params={ hub }>{ hub.friendlyName }</Link></li>
 				})
 			}</ul>
 		);
+		/* jshint ignore:end */
 	}
 });
 

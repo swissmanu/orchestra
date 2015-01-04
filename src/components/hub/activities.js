@@ -1,6 +1,6 @@
 var React = require('react')
 	, Router = require('react-router')
-	, hubStore = require('../stores/hubStore')
+	, hubStore = require('../../stores/hubStore')
 	, q = require('q');
 
 module.exports = React.createClass({
@@ -35,8 +35,9 @@ module.exports = React.createClass({
 	}
 
 	, render: function() {
+		/* jshint ignore:start */
 		return (
-			<div>
+			<div className={ this.props.className }>
 				<h2>Activities for { this.state.hub.friendlyName }</h2>
 				<ol>{
 					this.state.activities.map(function(activity) {
@@ -45,5 +46,6 @@ module.exports = React.createClass({
 				}</ol>
 			</div>
 		);
+		/* jshint ignore:end */
 	}
 });

@@ -1,37 +1,38 @@
 /** @jsx React.DOM */
-/* jshint ignore:start */
 var React = require('react')
 	, HubList = require('./components/hubList')
-	, HubActivities = require('./components/hubActivities')
+	, Hub = require('./components/hub')
+	, Welcome = require('./components/welcome')
 
 	, Router = require('react-router')
 	, Route = Router.Route
-	, DefaultRoute = Router.DefaultRoute
 	, RouteHandler = Router.RouteHandler
-	, Link = Router.Link;
+	, DefaultRoute = Router.DefaultRoute;
 
 var App = React.createClass({
 	
 	render: function() {
+		/* jshint ignore:start */
 		return (
-			<section>
-				<aside>
-					<HubList />
-				</aside>
-				<div>
-					<RouteHandler />
-				</div>
+			<section className="l-container">
+				<HubList className="l-sidebar nav" />
+				<RouteHandler />
 			</section>
 		);
+		/* jshint ignore:end */
 	}
 });
 
+
+/* jshint ignore:start */
 var routes = (
 	<Route handler={App} path="/">
-		<Route name="hub" path="/hub/:uuid" handler={ HubActivities } />
+		<DefaultRoute handler={ Welcome } />
+		<Route name="hub" path="/hub/:uuid" handler={ Hub } />
 	</Route>
 );
 
 Router.run(routes/*, Router.HistoryLocation*/, function(Handler) {
 	React.render(<Handler/>, document.body)
 });
+/* jshint ignore:end */

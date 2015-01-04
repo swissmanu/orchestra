@@ -1,0 +1,10 @@
+.nav {
+	color: white;
+  	background-color: #666;
+  
+	a { color: white; }
+  
+	&.is-second-level {
+		background-color: #bbb;
+	}
+}
