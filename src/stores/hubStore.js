@@ -14,12 +14,26 @@ function getHubs() {
 	return deferred.promise;
 }
 
+function triggerActivity(hubUuid, activityId) {
+	var deferred = q.defer();
+	
+	$.post('/api/hubs/' + hubUuid + '/activities/' + activityId + '/on', function() {
+		deferred.resolve();
+	});
+	
+	return deferred.promise;
+}
+
 module.exports = Reflux.createStore({
 	
 	listenables: [HubActions]
 
 	, onReloadHubs: function() {
 		getHubs().then(this.updateHubs);
+	}
+	
+	, onTriggerActivity: function(hub, activity) {
+		triggerActivity(hub.uuid, activity.id);
 	}
 	
 	, getHub: function(uuid) {

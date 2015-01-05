@@ -1,6 +1,7 @@
 var React = require('react')
 	, Router = require('react-router')
 	, hubStore = require('../../stores/hubStore')
+	, hubActions = require('../../actions/hubActions')
 	, q = require('q');
 
 module.exports = React.createClass({
@@ -34,12 +35,19 @@ module.exports = React.createClass({
 		
 	}
 
+	, _onClickActivity: function(activity, event) {
+		event.preventDefault();
+		hubActions.triggerActivity(this.state.hub, activity);
+	}
+	
 	, render: function() {
+		var self = this;
+		
 		/* jshint ignore:start */
 		return (
 			<ol className={ this.props.className }>{
 				this.state.activities.map(function(activity) {
-					return <li key={ activity.id } className="item"><a href="#">{ activity.label }</a></li>
+					return <li key={ activity.id } className="item"><a href="#" onClick={ self._onClickActivity.bind(this, activity) }>{ activity.label }</a></li>
 				})
 			}</ol>
 		);
