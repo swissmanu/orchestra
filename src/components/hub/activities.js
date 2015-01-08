@@ -3,7 +3,8 @@ var React = require('react')
 	, hubStore = require('../../stores/hubStore')
 	, hubActions = require('../../actions/hubActions')
 	, Activity = require('./activity')
-	, q = require('q');
+	, q = require('q')
+	, isNumber = require('amp-is-number');
 
 var Activities = React.createClass({
 
@@ -43,11 +44,14 @@ var Activities = React.createClass({
 
 	, _sortActivities: function(activities) {
 		return activities.sort(function(a, b) {
-			if(a.activityOrder && b.activityOrder) {
+			var aIsNumber = isNumber(a.activityOrder)
+				, bIsNumber = isNumber(b.activityOrder);
+
+			if(aIsNumber && bIsNumber) {
 				return a.activityOrder - b.activityOrder
-			} else if(a.activityOrder && !b.activityOrder) {
+			} else if(aIsNumber && !bIsNumber) {
 				return 1;
-			} else if(!a.activityOrder && b.activityOrder) {
+			} else if(!aIsNumber && bIsNumber) {
 				return -1;
 			} else {
 				return 0;
