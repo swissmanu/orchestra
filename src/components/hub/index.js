@@ -1,7 +1,8 @@
 var React = require('react')
 	, Activities = require('./activities');
 
-module.exports = React.createClass({
+var Hub = React.createClass({
+	
 	render: function() {
 		/* jshint ignore:start */
 		return(
@@ -13,3 +14,5 @@ module.exports = React.createClass({
 		/* jshint ignore:end */
 	}
 });
+
+module.exports = Hub;

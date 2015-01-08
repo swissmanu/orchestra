@@ -2,26 +2,31 @@ var React = require('react')
 	, Router = require('react-router')
 	, hubStore = require('../../stores/hubStore')
 	, hubActions = require('../../actions/hubActions')
+	, Activity = require('./activity')
 	, q = require('q');
 
-module.exports = React.createClass({
+var Activities = React.createClass({
+
 	mixins: [Router.State]
 
 	, getInitialState: function() {
-		this.load();
+		this._load();
 		return {
 			hub: {}
 			, activities: []
+			, loading: true
 		};
 	}
-	
+
 	, componentWillReceiveProps: function() {
-		this.load();
+		this._load();
 	}
-	
-	, load: function() {
+
+	, _load: function() {
 		var self = this
 			, uuid = this.getParams().uuid;
+
+		self.setState({ loading: true });
 
 		q.all([
 			hubStore.getHub(uuid)
@@ -29,28 +34,78 @@ module.exports = React.createClass({
 		]).then(function(data) {
 			self.setState({
 				hub: data[0]
-				, activities: data[1]
+				, activities: self._sortActivities(data[1])
+				, loading: false
 			});
 		});
-		
+
 	}
 
-	, _onClickActivity: function(activity, event) {
-		event.preventDefault();
-		hubActions.triggerActivity(this.state.hub, activity);
+	, _sortActivities: function(activities) {
+		return activities.sort(function(a, b) {
+			if(a.activityOrder && b.activityOrder) {
+				return a.activityOrder - b.activityOrder
+			} else if(a.activityOrder && !b.activityOrder) {
+				return 1;
+			} else if(!a.activityOrder && b.activityOrder) {
+				return -1;
+			} else {
+				return 0;
+			}
+		});
 	}
-	
-	, render: function() {
+
+	, _onClickActivity: function(hub, activity, event) {
+		event.preventDefault();
+		hubActions.triggerActivity(hub, activity);
+	}
+
+	, _renderLoadingIndicator: function() {
+		return(
+			/* jshint ignore:start */
+			<p>Loading...</p>
+			/* jshint ignore:end */
+		);
+	}
+
+	, _renderActivityList: function(activities) {
 		var self = this;
-		
-		/* jshint ignore:start */
+
+
 		return (
-			<ol className={ this.props.className }>{
-				this.state.activities.map(function(activity) {
-					return <li key={ activity.id } className="item"><a href="#" onClick={ self._onClickActivity.bind(this, activity) }>{ activity.label }</a></li>
+			/* jshint ignore:start */
+			<ol>{
+				activities.map(function(activity) {
+					return (
+						<li key={ activity.id } className="item">
+							<a href="" onClick={ self._onClickActivity.bind(self, self.state.hub, activity) }><Activity activity={ activity } /></a>
+						</li>
+					)
 				})
 			}</ol>
+			/* jshint ignore:end */
 		);
-		/* jshint ignore:end */
+	}
+
+	, render: function() {
+		var content;
+
+		if(this.state.loading) {
+			content = this._renderLoadingIndicator();
+		} else {
+			content = this._renderActivityList(this.state.activities);
+		}
+
+		return (
+			/* jshint ignore:start */
+			<div className={ this.props.className }>
+				{ content }
+			</div>
+			/* jshint ignore:end */
+		);
+
+
 	}
 });
+
+module.exports = Activities;

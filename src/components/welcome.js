@@ -1,6 +1,7 @@
 var React = require('react');
 
-module.exports = React.createClass({
+var Welcome = React.createClass({
+	
 	getDefaultProps: function() {
 		return {
 			className: 'l-content'
@@ -17,3 +18,5 @@ module.exports = React.createClass({
 		/* jshint ignore:end */
 	}
 });
+
+module.exports = Welcome;

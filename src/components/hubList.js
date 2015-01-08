@@ -7,6 +7,7 @@ var React = require('react')
 	, Link = Router.Link;
 
 var HubList = React.createClass({
+	
 	mixins: [
 		Reflux.connect(hubStore, 'hubs')
 		, Router.State
