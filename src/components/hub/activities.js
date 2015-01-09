@@ -3,6 +3,7 @@ var React = require('react')
 	, hubStore = require('../../stores/hubStore')
 	, hubActions = require('../../actions/hubActions')
 	, Activity = require('./activity')
+	, Spinner = require('../spinner')
 	, q = require('q')
 	, isNumber = require('amp-is-number');
 
@@ -67,7 +68,10 @@ var Activities = React.createClass({
 	, _renderLoadingIndicator: function() {
 		return(
 			/* jshint ignore:start */
-			<p>Loading...</p>
+			<div class="loading">
+				<Spinner />
+				Loading
+			</div>
 			/* jshint ignore:end */
 		);
 	}
@@ -82,7 +86,10 @@ var Activities = React.createClass({
 				activities.map(function(activity) {
 					return (
 						<li key={ activity.id } className="item">
-							<a href="" onClick={ self._onClickActivity.bind(self, self.state.hub, activity) }><Activity activity={ activity } /></a>
+							<a href="" onClick={ self._onClickActivity.bind(self, self.state.hub, activity) }>
+								<Activity activity={ activity } />
+								<Spinner />
+							</a>
 						</li>
 					)
 				})

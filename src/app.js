@@ -10,7 +10,7 @@ var React = require('react')
 	, DefaultRoute = Router.DefaultRoute;
 
 var App = React.createClass({
-	
+
 	render: function() {
 		/* jshint ignore:start */
 		return (
@@ -21,6 +21,7 @@ var App = React.createClass({
 		);
 		/* jshint ignore:end */
 	}
+
 });
 
 
