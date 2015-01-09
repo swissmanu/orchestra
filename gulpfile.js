@@ -48,17 +48,17 @@ gulp.task('sass', function() {
 		.pipe(gulp.dest('dist/config/'));
 });*/
 
-/*gulp.task('fonts', function() {
-	gulp.src('src/bower_components/bootstrap/dist/fonts/*')
-		.pipe(gulp.dest('dist/assets/fonts'));
-});*/
+gulp.task('fonts', function() {
+	gulp.src('static/fonts/**/*')
+		.pipe(gulp.dest('build/fonts'));
+});
 
 /*gulp.task('images', function() {
 	gulp.src('src/assets/images/*')
 		.pipe(gulp.dest('dist/assets/images'));
 });*/
 
-gulp.task('base', [/*'static', 'config', 'fonts', 'images',*/ 'sass']);
+gulp.task('base', [/*'static', 'config', 'images',*/'fonts', 'sass']);
 
 gulp.task('scripts', ['lint'], function() {
 	return gulp.src(['src/app.js'])
@@ -75,7 +75,7 @@ gulp.task('scripts', ['lint'], function() {
 
 gulp.task('html', ['base', 'scripts'], function() {
 	var assets = $.useref.assets();
-	
+
 	return gulp.src('src/*.html')
 		.pipe(assets)
 		.pipe(assets.restore())
@@ -91,7 +91,7 @@ gulp.task('compress', ['html'], function() {
 });
 
 gulp.task('browserify', ['lint'], function() {
-	return gulp.src(['src/app/app.js'])
+	return gulp.src(['src/app.js'])
 		.pipe($.browserify({
 			transform: ['reactify']
 			, extensions: ['.jsx']
@@ -103,24 +103,19 @@ gulp.task('browserify', ['lint'], function() {
 		.pipe($.size());
 });
 
-gulp.task('refresh', ['browserify'], function() {
+gulp.task('refresh-js', ['browserify'], function() {
 	gulp.src('build/scripts/app.js')
 		.pipe(devServer.reload());
 });
 
-gulp.task('watch', ['connect-dev'], function() {
-	gulp.watch([
-		'src/*.html'
-		, 'src/assets/styles/*.css'
-		, 'src/assets/images/*'
-		, 'src/app/*.js'
-		, 'src/app/**/*.js'
-	], function(event) {
-		return gulp.src(event.path)
-			.pipe(devServer.reload());
-	});
+gulp.task('refresh-sass', ['sass'], function() {
+	gulp.src('build/styles/app.css')
+		.pipe(devServer.reload());
+});
 
-	gulp.watch(['src/app/*.js', 'src/app/**/*.js'], ['refresh']);
+gulp.task('watch', ['connect-dev'], function() {
+	gulp.watch(['src/**/*.js'], ['refresh-js']);
+	gulp.watch(['scss/**/*.scss'], ['refresh-sass']);
 });
 
 gulp.task('development', ['browserify', 'html', 'sass'], function() {
