@@ -1,3 +1,16 @@
-.acitivities {
+.activities {
+
+	.loading {
+		margin-top: 20px;
+		
+		.loading-spinner, .loading-text {
+			display: block;
+			text-align: center;
+		}
+
+		.loading-spinner {
+			font-size: 30px;
+		}
+	}
 
 }

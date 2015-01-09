@@ -1,46 +1,30 @@
 var React = require('react')
+	, Reflux = require('reflux')
 	, Router = require('react-router')
-	, hubStore = require('../../stores/hubStore')
-	, hubActions = require('../../actions/hubActions')
+	, activityStore = require('../../stores/activityStore')
+	, activityActions = require('../../actions/activityActions')
 	, Activity = require('./activity')
 	, Spinner = require('../spinner')
-	, q = require('q')
 	, isNumber = require('amp-is-number');
 
 var Activities = React.createClass({
 
-	mixins: [Router.State]
+	mixins: [
+		Reflux.connect(activityStore, 'activities')
+		, Router.State
+	]
 
 	, getInitialState: function() {
-		this._load();
+		activityActions.loadActivities(this.getParams().uuid);
+
 		return {
-			hub: {}
-			, activities: []
-			, loading: true
+			activities: []
 		};
 	}
 
 	, componentWillReceiveProps: function() {
-		this._load();
-	}
-
-	, _load: function() {
-		var self = this
-			, uuid = this.getParams().uuid;
-
-		self.setState({ loading: true });
-
-		q.all([
-			hubStore.getHub(uuid)
-			, hubStore.getActivitiesForHubWithUuid(uuid)
-		]).then(function(data) {
-			self.setState({
-				hub: data[0]
-				, activities: self._sortActivities(data[1])
-				, loading: false
-			});
-		});
-
+		this.setState({ activities: [] });
+		activityActions.loadActivities(this.getParams().uuid);
 	}
 
 	, _sortActivities: function(activities) {
@@ -60,35 +44,36 @@ var Activities = React.createClass({
 		});
 	}
 
-	, _onClickActivity: function(hub, activity, event) {
+	, _onClickActivity: function(hubUuid, activityId, event) {
 		event.preventDefault();
-		hubActions.triggerActivity(hub, activity);
+		activityActions.triggerActivity(hubUuid, activityId);
 	}
 
 	, _renderLoadingIndicator: function() {
 		return(
 			/* jshint ignore:start */
-			<div class="loading">
-				<Spinner />
-				Loading
+			<div className="loading">
+				<span className="loading-spinner"><Spinner /></span>
+				<span className="loading-text">Fetching Activities...</span>
 			</div>
 			/* jshint ignore:end */
 		);
 	}
 
 	, _renderActivityList: function(activities) {
-		var self = this;
-
+		var self = this
+			, hubUuid = self.getParams().uuid;
 
 		return (
 			/* jshint ignore:start */
 			<ol>{
 				activities.map(function(activity) {
+					var spinner = activity.pending ? <Spinner /> : undefined;
 					return (
 						<li key={ activity.id } className="item">
-							<a href="" onClick={ self._onClickActivity.bind(self, self.state.hub, activity) }>
+							<a href="" onClick={ self._onClickActivity.bind(self, hubUuid, activity.id) }>
 								<Activity activity={ activity } />
-								<Spinner />
+								{ spinner }
 							</a>
 						</li>
 					)
@@ -99,9 +84,10 @@ var Activities = React.createClass({
 	}
 
 	, render: function() {
-		var content;
+		var content
+			, className = this.props.className + ' activities';
 
-		if(this.state.loading) {
+		if(this.state.activities.length === 0) {
 			content = this._renderLoadingIndicator();
 		} else {
 			content = this._renderActivityList(this.state.activities);
@@ -109,7 +95,7 @@ var Activities = React.createClass({
 
 		return (
 			/* jshint ignore:start */
-			<div className={ this.props.className }>
+			<div className={ className }>
 				{ content }
 			</div>
 			/* jshint ignore:end */
