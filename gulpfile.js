@@ -21,6 +21,16 @@ gulp.task('connect-dev', function() {
 	, livereload: true
 }));*/
 
+gulp.task('save-primus', function(cb) {
+	var primusConfig = require('orchestra-api').webSocketApiConfig
+		, Primus = require('primus')
+		, http = require('http')
+		, primus = new Primus(http.createServer(), primusConfig);
+	primus.save('src/primusClient.js', function(err) {
+		cb(err);
+	});
+});
+
 gulp.task('clean', function() {
 	return gulp.src(['build'], {read: false})
 		.pipe($.rimraf());
