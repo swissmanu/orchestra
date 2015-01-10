@@ -1,27 +1,25 @@
 'use strict';
 
 var gulp = require('gulp')
-	, $ = require('gulp-load-plugins')()
-	, connect = $.connectMulti
-	, devServer = connect()
-	, proServer = connect();
+	, $ = require('gulp-load-plugins')();
 
-gulp.task('connect-dev', devServer.server({
-	root: ['build']
-	, port: 8080
-	, livereload: true
-	, middleware: function() {
-		return [
-			require('../api/index.js')
-		];
-	}
-}));
+gulp.task('connect-dev', function() {
+	// Setup an express app that serves the rest api, websocket api and the client files:
+	var express = require('express')
+		, app = express()
+		, client = require('./')
+		, api = require('../api/index');
 
-gulp.task('connect-pro', proServer.server({
+	app.use(client);
+	app.use('/api', api.restApi);
+	api.webSocketApi(app.listen(8080));
+});
+
+/*gulp.task('connect-pro', proServer.server({
 	root: ['dist']
 	, port: 9090
 	, livereload: true
-}));
+}));*/
 
 gulp.task('clean', function() {
 	return gulp.src(['build'], {read: false})
