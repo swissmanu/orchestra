@@ -21,6 +21,7 @@
   },
   "devDependencies": {
     "amp-is-number": "^1.0.1",
+    "amp-is-string": "^1.0.1",
     "gulp": "^3.8.10",
     "gulp-autoprefixer": "^2.0.0",
     "gulp-browserify": "^0.5.0",

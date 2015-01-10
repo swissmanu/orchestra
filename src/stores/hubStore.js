@@ -2,7 +2,8 @@ var Reflux = require('reflux')
 	, HubActions = require('../actions/hubActions')
 	, $ = require('jquery')
 	, q = require('q')
-	, Primus = require('../primusClient');
+	, Primus = require('../primusClient')
+	, isString = require('amp-is-string');
 
 function getHubs() {
 	var deferred = q.defer();
@@ -22,13 +23,17 @@ module.exports = Reflux.createStore({
 
 		this._primus = new Primus('ws://localhost:8080');
 
-		this._primus.write({
-			action: 'subscribe'
-			, topic: 'discoveredHubs'
-		});
+		this._primus.write({ action: 'subscribe', topic: 'discoveredHubs' });
+		this._primus.write({ action: 'subscribe', topic: 'stateDigest' });
 
 		this._primus.on('data', function(data) {
-			self.trigger(data.data);
+			if(isString(data.topic)) {
+				if(data.topic === 'discoveredHubs') {
+					self.trigger(data.data);
+				} else if(data.topic === 'stateDigest') {
+					console.log(data.data);
+				}
+			}
 		});
 	}
 
