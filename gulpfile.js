@@ -8,7 +8,7 @@ gulp.task('connect-dev', function() {
 	var express = require('express')
 		, app = express()
 		, client = require('./')
-		, api = require('../api/index');
+		, api = require('orchestra-api');
 
 	app.use(client);
 	app.use('/api', api.restApi);
@@ -26,7 +26,7 @@ gulp.task('save-primus', function(cb) {
 		, Primus = require('primus')
 		, http = require('http')
 		, primus = new Primus(http.createServer(), primusConfig);
-	
+
 	primus.save('src/primusClient.js', function(err) {
 		cb(err);
 	});
