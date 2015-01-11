@@ -2,7 +2,7 @@
 
 	.loading {
 		margin-top: 20px;
-		
+
 		.loading-spinner, .loading-text {
 			display: block;
 			text-align: center;
@@ -13,4 +13,12 @@
 		}
 	}
 
+	.item.is-started {
+		color: #000;
+		background-color: #FFF;
+
+		a {
+			color: #000;
+		}
+	}
 }

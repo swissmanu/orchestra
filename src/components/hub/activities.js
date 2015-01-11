@@ -69,9 +69,15 @@ var Activities = React.createClass({
 			/* jshint ignore:start */
 			<ol>{
 				activities.map(function(activity) {
-					var spinner = activity.pending ? <Spinner /> : undefined;
+					var spinner = activity.pending ? <Spinner /> : undefined
+						, classNames = 'item';
+
+					if(activity.started) {
+						classNames += ' is-started';
+					}
+
 					return (
-						<li key={ activity.id } className="item">
+						<li key={ activity.id } className={ classNames }>
 							<a href="" onClick={ self._onClickActivity.bind(self, hubUuid, activity.id) }>
 								<Activity activity={ activity } />
 								{ spinner }
