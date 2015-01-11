@@ -2,24 +2,24 @@
 	$nav-first-level-background-color: #666;
 	$nav-first-level-color: #fff;
 	$nav-first-level-selected-color: $nav-first-level-color;
-  
+
 	$nav-second-level-background-color: #bbb;
 	$nav-second-level-color: $nav-first-level-color;
 	$nav-second-level-selected-background-color: #fff;
-	$nav-second-level-selected-color: $nav-first-level-color;
-  
+	$nav-second-level-selected-color: #000;
+
 	$nav-first-level-selected-background-color: $nav-second-level-background-color;
-	
-  
+
+
 	background-color: $nav-first-level-background-color;
-  
+
 	.item {
 		a {
 			display: block;
 			padding: 10px;
 			color: $nav-first-level-color;
 		}
-		
+
 		&.is-selected {
 			a { color: $nav-first-level-selected-color; }
 			background-color: $nav-first-level-selected-background-color;
@@ -32,7 +32,7 @@
 		.item {
 			a { color: $nav-second-level-color; }
 
-			.is-selected {
+			&.is-selected {
 				a { color: $nav-second-level-selected-color; }
 				background-color: $nav-second-level-selected-background-color;
 				color: $nav-second-level-selected-color;

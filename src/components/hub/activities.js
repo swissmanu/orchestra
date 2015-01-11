@@ -73,7 +73,7 @@ var Activities = React.createClass({
 						, classNames = 'item';
 
 					if(activity.started) {
-						classNames += ' is-started';
+						classNames += ' is-selected'; // reuse the nav components ability to show selected items
 					}
 
 					return (
