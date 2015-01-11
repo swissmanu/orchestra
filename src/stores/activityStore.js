@@ -1,34 +1,20 @@
 var Reflux = require('reflux')
 	, activityActions = require('../actions/activityActions')
-	, $ = require('jquery')
-	, q = require('q');
-
-
-function loadActivities(hubUuid) {
-	var deferred = q.defer();
-	console.log(hubUuid);
-	$.get('/api/hubs/' + hubUuid + '/activities', function(activities) {
-		deferred.resolve(activities);
-	});
-
-	return deferred.promise;
-}
-
-function triggerActivity(hubUuid, activityId) {
-	var deferred = q.defer();
-
-	$.post('/api/hubs/' + hubUuid + '/activities/' + activityId + '/on', function() {
-		deferred.resolve();
-	});
-
-	return deferred.promise;
-}
+	, api = require('../api');
 
 module.exports = Reflux.createStore({
 	listenables: [activityActions]
 
+	, init: function() {
+		var self = this;
+
+		api.on('stateDigest', function(stateDigest) {
+			console.log('stateDigest', stateDigest);
+		});
+	}
+
 	, onLoadActivities: function(hubUuid) {
-		loadActivities(hubUuid)
+		api.loadActivities(hubUuid)
 			.then(activityActions.loadActivitiesCompleted)
 			.catch(activityActions.loadActivitiesFailed);
 	}
@@ -41,7 +27,7 @@ module.exports = Reflux.createStore({
 	, onLoadActivitiesFailed: function() {
 
 	}
-	
+
 
 	, onTriggerActivity: function(hubUuid, activityId) {
 		this.activities.some(function(activity) {
@@ -52,7 +38,7 @@ module.exports = Reflux.createStore({
 		});
 		this.trigger(this.activities);
 
-		triggerActivity(hubUuid, activityId)
+		api.triggerActivity(hubUuid, activityId)
 			.then(activityActions.triggerActivityCompleted.bind(this, activityId))
 			.catch(activityActions.triggerActivityFailed.bind(this, activityId))
 	}
