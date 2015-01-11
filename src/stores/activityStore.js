@@ -1,6 +1,9 @@
 var Reflux = require('reflux')
 	, activityActions = require('../actions/activityActions')
-	, api = require('../api');
+	, api = require('../api')
+	, q = require('q')
+	, isNumber = require('amp-is-number')
+	, isString = require('amp-is-string');
 
 module.exports = Reflux.createStore({
 	listenables: [activityActions]
@@ -9,13 +12,50 @@ module.exports = Reflux.createStore({
 		var self = this;
 
 		api.on('stateDigest', function(stateDigest) {
-			console.log('stateDigest', stateDigest);
+			if(stateDigest.hub.uuid === self._hubUuid) {
+				console.log('got stateDigest', stateDigest);
+
+				self.activities.forEach(function(activity) {
+					activity.pending = false;
+					activity.started = false;
+
+					if(activity.id === stateDigest.stateDigest.activityId) {
+						switch(stateDigest.stateDigest.activityStatus) {
+							case 1:
+								activity.pending = true;
+								break;
+							case 2:
+								activity.started = true;
+								break;
+						}
+					}
+				});
+
+				self.trigger(self.activities);
+			}
 		});
 	}
 
 	, onLoadActivities: function(hubUuid) {
-		api.loadActivities(hubUuid)
-			.then(activityActions.loadActivitiesCompleted)
+		this._hubUuid = hubUuid;
+
+		q.all([
+			api.loadActivities(hubUuid)
+			, api.getStartedActivityForHubWithUuid(hubUuid)
+		])
+			.then(function(results) {
+				var activities = results[0]
+					, currentActivity = results[1];
+
+				activities.some(function(activity) {
+					if(activity.id === currentActivity.id) {
+						activity.started = true;
+						return true;
+					}
+				});
+
+				activityActions.loadActivitiesCompleted(activities);
+			})
 			.catch(activityActions.loadActivitiesFailed);
 	}
 
@@ -30,28 +70,13 @@ module.exports = Reflux.createStore({
 
 
 	, onTriggerActivity: function(hubUuid, activityId) {
-		this.activities.some(function(activity) {
-			if(activity.id === activityId) {
-				activity.pending = true;
-				return true;
-			}
-		});
-		this.trigger(this.activities);
-
 		api.triggerActivity(hubUuid, activityId)
 			.then(activityActions.triggerActivityCompleted.bind(this, activityId))
 			.catch(activityActions.triggerActivityFailed.bind(this, activityId))
 	}
 
 	, onTriggerActivityCompleted: function(activityId) {
-		this.activities.some(function(activity) {
-			if(activity.id === activityId) {
-				activity.pending = false;
-				return true;
-			}
-		});
 
-		this.trigger(this.activities);
 	}
 
 	, onTriggerActivityFailed: function() {

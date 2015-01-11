@@ -64,6 +64,7 @@ var Activities = React.createClass({
 		var self = this
 			, hubUuid = self.getParams().uuid;
 
+		activities = this._sortActivities(activities);
 		return (
 			/* jshint ignore:start */
 			<ol>{

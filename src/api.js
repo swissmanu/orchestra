@@ -48,6 +48,16 @@ Api.prototype.loadActivities = function loadActivities(hubUuid) {
 	return deferred.promise;
 };
 
+Api.prototype.getStartedActivityForHubWithUuid = function getStartedActivityForHubWithUuid(hubUuid) {
+	var deferred = q.defer();
+
+	$.get('/api/hubs/' + hubUuid + '/activities/current', function(startedActivity) {
+		deferred.resolve(startedActivity);
+	});
+
+	return deferred.promise;
+};
+
 Api.prototype.triggerActivity = function triggerActivity(hubUuid, activityId) {
 	var deferred = q.defer();
 
