@@ -15,6 +15,10 @@ var Activity = React.createClass({
 			/* jshint ignore:start */
 			icon = <img src={ this.props.activity.baseImageUri + this.props.activity.imageKey } className="icon" />
 			/* jshint ignore:end */
+		} else {
+			/* jshint ignore:start */
+			icon = <i className="fa fa-film icon"></i>
+			/* jshint ignore:end */
 		}
 
 		return icon;
