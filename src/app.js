@@ -1,8 +1,8 @@
 /** @jsx React.DOM */
 var React = require('react')
-	, HubList = require('./components/hubList.jsx')
+	, HubList = require('./components/hubList')
 	, Hub = require('./components/hub')
-	, Welcome = require('./components/welcome.jsx')
+	, Welcome = require('./components/welcome')
 
 	, Router = require('react-router')
 	, Route = Router.Route

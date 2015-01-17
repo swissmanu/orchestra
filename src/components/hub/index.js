@@ -1,5 +1,5 @@
 var React = require('react')
-	, Activities = require('./activities.jsx');
+	, Activities = require('./activities');
 
 var Hub = React.createClass({
 

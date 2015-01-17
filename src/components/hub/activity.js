@@ -1,5 +1,5 @@
 var React = require('react')
-	, Spinner = require('../spinner.jsx');
+	, Spinner = require('../spinner');
 
 var Activity = React.createClass({
 

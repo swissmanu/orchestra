@@ -3,8 +3,8 @@ var React = require('react')
 	, Router = require('react-router')
 	, activityStore = require('../../stores/activityStore')
 	, activityActions = require('../../actions/activityActions')
-	, Activity = require('./activity.jsx')
-	, Spinner = require('../spinner.jsx')
+	, Activity = require('./activity')
+	, Spinner = require('../spinner')
 	, isNumber = require('amp-is-number');
 
 var Activities = React.createClass({
