@@ -1,8 +1,8 @@
 var React = require('react')
-	, Activities = require('./activities');
+	, Activities = require('./activities.jsx');
 
 var Hub = React.createClass({
-	
+
 	render: function() {
 		/* jshint ignore:start */
 		return(
