@@ -1,4 +1,5 @@
-var React = require('react');
+var React = require('react')
+	, Spinner = require('../spinner');
 
 var Activity = React.createClass({
 
@@ -25,17 +26,20 @@ var Activity = React.createClass({
 	}
 
 	, render: function() {
-		var classNames = 'activity';
+		var activity = this.props.activity
+			, classNames = 'activity'
+			, spinner = activity.pending ? <Spinner /> : undefined;  // jshint ignore:line
 
-		if(this.props.activity.started) {
+		if(activity.started) {
 			classNames += ' is-started';
 		}
 
 		return (
 			/* jshint ignore:start */
 			<span className={ classNames }>
-				{ this._renderIcon(this.props.activity) }
-				<span className="label">{ this.props.activity.label }</span>
+				{ this._renderIcon(activity) }
+				<span className="label">{ activity.label }</span>
+				{ spinner }
 			</span>
 			/* jshint ignore:end */
 		)
