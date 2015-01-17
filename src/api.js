@@ -3,7 +3,8 @@ var Primus = require('./primusClient')
 	, util = require('util')
 	, $ = require('jquery')
 	, q = require('q')
-	, isString = require('amp-is-string');
+	, isString = require('amp-is-string')
+	, validTopics = ['discoveredHubs', 'stateDigest'];
 
 
 var Api = function() {
@@ -15,12 +16,9 @@ var Api = function() {
 	self._primus.write({ action: 'subscribe', topic: 'stateDigest' });
 
 	self._primus.on('data', function(data) {
-		if(isString(data.topic)) {
-			if(data.topic === 'discoveredHubs') {
-				self.emit('discoveredHubs', data.data);
-			} else if(data.topic === 'stateDigest') {
-				self.emit('stateDigest', data.data);
-			}
+		var topic = data.topic;
+		if(isString(topic) && validTopics.indexOf(topic) !== -1) {
+			self.emit(topic, data.data);
 		}
 	});
 

@@ -8,8 +8,8 @@ module.exports = Reflux.createStore({
 	, init: function() {
 		var self = this;
 
-		api.on('discoveredHubs', function(data) {
-			self.trigger(data.data);
+		api.on('discoveredHubs', function(hubs) {
+			self.trigger(hubs);
 		});
 	}
 
