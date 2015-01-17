@@ -100,7 +100,7 @@ gulp.task('compress', ['html'], function() {
 });
 
 gulp.task('browserify', ['lint'], function() {
-	return gulp.src(['src/app.js'])
+	return gulp.src(['src/app.jsx.js'])
 		.pipe($.browserify({
 			transform: ['reactify']
 			, extensions: ['.jsx']
@@ -108,6 +108,7 @@ gulp.task('browserify', ['lint'], function() {
 		.on('prebundle', function(bundler) {
 			bundler.require('react');
 		})
+		.pipe($.rename('app.js'))
 		.pipe(gulp.dest('build/scripts'))
 		.pipe($.size());
 });

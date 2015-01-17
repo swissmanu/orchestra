@@ -1,5 +1,4 @@
-var Reflux = require('reflux')
-	, $ = require('jquery');
+var Reflux = require('reflux');
 
 var ActivityActions = Reflux.createActions([
 	'loadActivities'
