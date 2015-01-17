@@ -7,7 +7,7 @@ var Primus = require('./primusClient')
 	, validTopics = ['discoveredHubs', 'stateDigest'];
 
 
-var Api = function() {
+var ApiAdapter = function() {
 	var self = this;
 
 	self._primus = new Primus('ws://localhost:8080');
@@ -24,9 +24,9 @@ var Api = function() {
 
 	EventEmitter.call(this);
 };
-util.inherits(Api, EventEmitter);
+util.inherits(ApiAdapter, EventEmitter);
 
-Api.prototype.getHubs = function getHubs() {
+ApiAdapter.prototype.getHubs = function getHubs() {
 	var deferred = q.defer();
 
 	$.get('/api/hubs', function(hubs) {
@@ -36,7 +36,7 @@ Api.prototype.getHubs = function getHubs() {
 	return deferred.promise;
 };
 
-Api.prototype.loadActivities = function loadActivities(hubUuid) {
+ApiAdapter.prototype.loadActivities = function loadActivities(hubUuid) {
 	var deferred = q.defer();
 
 	$.get('/api/hubs/' + hubUuid + '/activities', function(activities) {
@@ -46,7 +46,7 @@ Api.prototype.loadActivities = function loadActivities(hubUuid) {
 	return deferred.promise;
 };
 
-Api.prototype.getStartedActivityForHubWithUuid = function getStartedActivityForHubWithUuid(hubUuid) {
+ApiAdapter.prototype.getStartedActivityForHubWithUuid = function getStartedActivityForHubWithUuid(hubUuid) {
 	var deferred = q.defer();
 
 	$.get('/api/hubs/' + hubUuid + '/activities/current', function(startedActivity) {
@@ -56,7 +56,7 @@ Api.prototype.getStartedActivityForHubWithUuid = function getStartedActivityForH
 	return deferred.promise;
 };
 
-Api.prototype.triggerActivity = function triggerActivity(hubUuid, activityId) {
+ApiAdapter.prototype.triggerActivity = function triggerActivity(hubUuid, activityId) {
 	var deferred = q.defer();
 
 	$.post('/api/hubs/' + hubUuid + '/activities/' + activityId + '/on', function() {
@@ -67,5 +67,5 @@ Api.prototype.triggerActivity = function triggerActivity(hubUuid, activityId) {
 };
 
 
-module.exports = new Api();
+module.exports = new ApiAdapter();
 

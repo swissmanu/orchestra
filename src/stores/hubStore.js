@@ -1,6 +1,6 @@
 var Reflux = require('reflux')
 	, HubActions = require('../actions/hubActions')
-	, api = require('../api');
+	, apiAdapter = require('../apiAdapter');
 
 module.exports = Reflux.createStore({
 	listenables: [HubActions]
@@ -8,13 +8,13 @@ module.exports = Reflux.createStore({
 	, init: function() {
 		var self = this;
 
-		api.on('discoveredHubs', function(hubs) {
+		apiAdapter.on('discoveredHubs', function(hubs) {
 			self.trigger(hubs);
 		});
 	}
 
 	, onReloadHubs: function() {
-		api.getHubs()
+		apiAdapter.getHubs()
 			.then(HubActions.reloadHubsCompleted)
 			.catch(HubActions.reloadHubsFailed);
 	}

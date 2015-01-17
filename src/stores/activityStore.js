@@ -1,6 +1,6 @@
 var Reflux = require('reflux')
 	, activityActions = require('../actions/activityActions')
-	, api = require('../api')
+	, apiAdapter = require('../apiAdapter')
 	, q = require('q')
 	, isNumber = require('amp-is-number')
 	, isString = require('amp-is-string');
@@ -11,7 +11,7 @@ module.exports = Reflux.createStore({
 	, init: function() {
 		var self = this;
 
-		api.on('stateDigest', function(stateDigest) {
+		apiAdapter.on('stateDigest', function(stateDigest) {
 			if(stateDigest.hub.uuid === self._hubUuid) {
 				console.log('got stateDigest', stateDigest);
 
@@ -40,8 +40,8 @@ module.exports = Reflux.createStore({
 		this._hubUuid = hubUuid;
 
 		q.all([
-			api.loadActivities(hubUuid)
-			, api.getStartedActivityForHubWithUuid(hubUuid)
+			apiAdapter.loadActivities(hubUuid)
+			, apiAdapter.getStartedActivityForHubWithUuid(hubUuid)
 		])
 			.then(function(results) {
 				var activities = results[0]
@@ -70,7 +70,7 @@ module.exports = Reflux.createStore({
 
 
 	, onTriggerActivity: function(hubUuid, activityId) {
-		api.triggerActivity(hubUuid, activityId)
+		apiAdapter.triggerActivity(hubUuid, activityId)
 			.then(activityActions.triggerActivityCompleted.bind(this, activityId))
 			.catch(activityActions.triggerActivityFailed.bind(this, activityId))
 	}

@@ -27,7 +27,7 @@ gulp.task('save-primus', function(cb) {
 		, http = require('http')
 		, primus = new Primus(http.createServer(), primusConfig);
 
-	primus.save('src/primusClient.js', function(err) {
+	primus.save('src/apiAdapter/primusClient.js', function(err) {
 		cb(err);
 	});
 });
