@@ -3,7 +3,7 @@
 var gulp = require('gulp')
 	, $ = require('gulp-load-plugins')();
 
-gulp.task('connect-dev', function() {
+gulp.task('server-dev', function() {
 	// Setup an express app that serves the rest api, websocket api and the client files:
 	var express = require('express')
 		, app = express()
@@ -15,7 +15,7 @@ gulp.task('connect-dev', function() {
 	api.webSocketApi(app.listen(8080));
 });
 
-/*gulp.task('connect-pro', proServer.server({
+/*gulp.task('server-prod', proServer.server({
 	root: ['dist']
 	, port: 9090
 	, livereload: true
@@ -122,19 +122,21 @@ gulp.task('refresh-sass', ['sass'], function() {
 		.pipe(devServer.reload());
 });
 
-gulp.task('watch', ['connect-dev'], function() {
+gulp.task('watch', ['server-dev'], function() {
 	gulp.watch(['src/**/*.js'], ['refresh-js']);
 	gulp.watch(['scss/**/*.scss'], ['refresh-sass']);
 });
 
-gulp.task('development', ['browserify', 'html', 'sass'], function() {
+gulp.task('dev', ['browserify', 'html', 'sass'], function() {
 	gulp.start('watch');
 });
 
 gulp.task('build', ['compress'], function() {
-	gulp.start('connect-pro');
+	gulp.start('server-prod');
 });
 
-gulp.task('production', ['clean'], function() {
+gulp.task('prod', ['clean'], function() {
 	gulp.start('build');
 });
+
+gulp.task('default', ['dev']);
