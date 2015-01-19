@@ -1,6 +1,6 @@
 var Reflux = require('reflux')
 	, HubActions = require('../actions/hubActions')
-	, apiAdapter = require('../apiAdapter');
+	, apiAdapter = require('../apiAdapter/js');
 
 module.exports = Reflux.createStore({
 	listenables: [HubActions]

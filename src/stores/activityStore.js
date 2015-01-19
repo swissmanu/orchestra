@@ -1,6 +1,6 @@
 var Reflux = require('reflux')
 	, activityActions = require('../actions/activityActions')
-	, apiAdapter = require('../apiAdapter')
+	, apiAdapter = require('../apiAdapter/js')
 	, q = require('q')
 	, isNumber = require('amp-is-number')
 	, isString = require('amp-is-string');

@@ -1,7 +1,7 @@
 var Primus = require('./primusClient')
 	, EventEmitter = require('events').EventEmitter
 	, util = require('util')
-	, request = require('browser-request')
+	, $ = require('jquery')
 	, q = require('q')
 	, isString = require('amp-is-string')
 	, validTopics = ['discoveredHubs', 'stateDigest'];
@@ -29,8 +29,8 @@ util.inherits(ApiAdapter, EventEmitter);
 ApiAdapter.prototype.getHubs = function getHubs() {
 	var deferred = q.defer();
 
-	request('/api/hubs', function(err, response, body) {
-		deferred.resolve(JSON.parse(body));
+	$.get('/api/hubs', function(hubs) {
+		deferred.resolve(hubs);
 	});
 
 	return deferred.promise;
@@ -39,8 +39,8 @@ ApiAdapter.prototype.getHubs = function getHubs() {
 ApiAdapter.prototype.loadActivities = function loadActivities(hubUuid) {
 	var deferred = q.defer();
 
-	request('/api/hubs/' + hubUuid + '/activities', function(err, response, body) {
-		deferred.resolve(JSON.parse(body));
+	$.get('/api/hubs/' + hubUuid + '/activities', function(activities) {
+		deferred.resolve(activities);
 	});
 
 	return deferred.promise;
@@ -49,8 +49,8 @@ ApiAdapter.prototype.loadActivities = function loadActivities(hubUuid) {
 ApiAdapter.prototype.getStartedActivityForHubWithUuid = function getStartedActivityForHubWithUuid(hubUuid) {
 	var deferred = q.defer();
 
-	request('/api/hubs/' + hubUuid + '/activities/current', function(err, response, body) {
-		deferred.resolve(JSON.parse(body));
+	$.get('/api/hubs/' + hubUuid + '/activities/current', function(startedActivity) {
+		deferred.resolve(startedActivity);
 	});
 
 	return deferred.promise;
@@ -59,9 +59,7 @@ ApiAdapter.prototype.getStartedActivityForHubWithUuid = function getStartedActiv
 ApiAdapter.prototype.triggerActivity = function triggerActivity(hubUuid, activityId) {
 	var deferred = q.defer();
 
-	request.post({
-		url: '/api/hubs/' + hubUuid + '/activities/' + activityId + '/on'
-	}, function() {
+	$.post('/api/hubs/' + hubUuid + '/activities/' + activityId + '/on', function() {
 		deferred.resolve();
 	});
 
