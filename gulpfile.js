@@ -100,7 +100,7 @@ gulp.task('compress', ['html'], function() {
 });
 
 gulp.task('browserify', ['lint'], function() {
-	return gulp.src(['src/app.jsx.js'])
+	return gulp.src(['src/app.js'])
 		.pipe($.browserify({
 			transform: ['reactify']
 			, extensions: ['.jsx']
@@ -111,6 +111,12 @@ gulp.task('browserify', ['lint'], function() {
 		.pipe($.rename('app.js'))
 		.pipe(gulp.dest('build/scripts'))
 		.pipe($.size());
+});
+
+gulp.task('jsx-transform', ['lint'], function() {
+	return gulp.src('src/**/*.js')
+		.pipe($.react())
+		.pipe(gulp.dest('build/scripts'));
 });
 
 gulp.task('refresh-js', ['browserify'], function() {
@@ -139,5 +145,8 @@ gulp.task('build', ['compress'], function() {
 gulp.task('prod', ['clean'], function() {
 	gulp.start('build');
 });
+
+
+gulp.task('prepare-node-webkit', ['sass', 'jsx-transform']);
 
 gulp.task('default', ['dev']);
