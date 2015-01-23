@@ -40,7 +40,6 @@
     "gulp-util": "^3.0.1",
     "jshint-stylish": "^1.0.0",
     "orchestra-jsapi": "^0.0.1",
-    "orchestra-webapi": "^0.0.1",
     "primus": "^2.4.12",
     "q": "^1.1.2",
     "react": "^0.12.2",
