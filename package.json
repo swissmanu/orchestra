@@ -1,13 +1,10 @@
 {
   "name": "orchestra-client",
-  "version": "0.0.1",
+  "version": "0.0.3",
   "description": "Control Harmony Hubs from your computer.",
   "main": "index.js",
   "author": "Manuel Alabor <manuel@alabor.me>",
   "license": "MIT",
-  "scripts": {
-    "postinstall": "node_modules/.bin/gulp compress"
-  },
   "repository": {
     "type": "git",
     "url": "https://github.com/swissmanu/orchestra-client"
@@ -17,12 +14,18 @@
   },
   "homepage": "https://github.com/swissmanu/orchestra-client",
   "dependencies": {
-    "express": "^4.10.7"
-  },
-  "devDependencies": {
     "amp-is-number": "^1.0.1",
     "amp-is-string": "^1.0.1",
     "browser-request": "^0.3.3",
+    "orchestra-jsapi": "^0.0.1",
+    "q": "^1.1.2",
+    "react": "^0.12.2",
+    "react-router": "^0.11.6",
+    "reactify": "^0.17.1",
+    "reflux": "^0.2.1"
+  },
+  "devDependencies": {
+    "tiny-lr": "^0.1.4",
     "gulp": "^3.8.10",
     "gulp-autoprefixer": "^2.0.0",
     "gulp-browserify": "^0.5.0",
@@ -39,15 +42,6 @@
     "gulp-useref": "^1.0.2",
     "gulp-util": "^3.0.1",
     "jshint-stylish": "^1.0.0",
-    "orchestra-jsapi": "^0.0.1",
-    "primus": "^2.4.12",
-    "q": "^1.1.2",
-    "react": "^0.12.2",
-    "react-router": "^0.11.6",
-    "reactify": "^0.17.1",
-    "reflux": "^0.2.1",
-    "tiny-lr": "^0.1.4",
-    "wiredep": "^2.2.2",
-    "ws": "^0.6.5"
+    "express": "^4.10.7"
   }
 }
