@@ -1,13 +1,13 @@
-var Reflux = require('reflux');
+var Reflux = require('reflux')
 
 var ActivityActions = Reflux.createActions([
-	'loadActivities'
-	, 'loadActivitiesCompleted'
-	, 'loadActivitiesFailed'
+  'loadActivities',
+  'loadActivitiesCompleted',
+  'loadActivitiesFailed',
 
-	, 'triggerActivity'
-	, 'triggerActivityCompleted'
-	, 'triggerActivityFailed'
-]);
+  'triggerActivity',
+  'triggerActivityCompleted',
+  'triggerActivityFailed'
+])
 
-module.exports = ActivityActions;
+module.exports = ActivityActions

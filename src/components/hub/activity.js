@@ -1,50 +1,42 @@
 var React = require('react')
-	, Spinner = require('../spinner');
+var Spinner = require('../spinner')
 
 var Activity = React.createClass({
+  propTypes: {
+    activity: React.PropTypes.shape({
+      label: React.PropTypes.string.isRequired
+    })
+  },
 
-	propTypes: {
-		activity: React.PropTypes.shape({
-			label: React.PropTypes.string.isRequired
-		})
-	}
+  _renderIcon: function (activity) {
+    var icon
 
-	, _renderIcon: function(activity) {
-		var icon;
+    if (activity.baseImageUri && activity.imageKey) {
+      icon = <img src={ this.props.activity.baseImageUri + this.props.activity.imageKey } className='icon' />
+    } else {
+      icon = <i className='fa fa-film icon'></i>
+    }
 
-		if(activity.baseImageUri && activity.imageKey) {
-			/* jshint ignore:start */
-			icon = <img src={ this.props.activity.baseImageUri + this.props.activity.imageKey } className="icon" />
-			/* jshint ignore:end */
-		} else {
-			/* jshint ignore:start */
-			icon = <i className="fa fa-film icon"></i>
-			/* jshint ignore:end */
-		}
+    return icon
+  },
 
-		return icon;
-	}
+  render: function () {
+    var activity = this.props.activity
+    var classNames = 'activity'
+    var spinner = activity.pending ? <Spinner /> : undefined
 
-	, render: function() {
-		var activity = this.props.activity
-			, classNames = 'activity'
-			, spinner = activity.pending ? <Spinner /> : undefined;  // jshint ignore:line
+    if (activity.started) {
+      classNames += ' is-started'
+    }
 
-		if(activity.started) {
-			classNames += ' is-started';
-		}
-
-		return (
-			/* jshint ignore:start */
-			<span className={ classNames }>
+    return (
+    <span className={ classNames }>
 				{ this._renderIcon(activity) }
-				<span className="label">{ activity.label }</span>
+				<span className='label'>{ activity.label }</span>
 				{ spinner }
 			</span>
-			/* jshint ignore:end */
-		)
+    )
+  }
+})
 
-	}
-});
-
-module.exports = Activity;
+module.exports = Activity

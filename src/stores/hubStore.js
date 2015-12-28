@@ -1,29 +1,27 @@
 var Reflux = require('reflux')
-	, HubActions = require('../actions/hubActions')
-	, apiAdapter = require('../apiAdapter/js');
+var HubActions = require('../actions/hubActions')
+var apiAdapter = require('../apiAdapter/js')
 
 module.exports = Reflux.createStore({
-	listenables: [HubActions]
+  listenables: [HubActions],
 
-	, init: function() {
-		var self = this;
+  init: function () {
+    var self = this
 
-		apiAdapter.on('discoveredHubs', function(hubs) {
-			self.trigger(hubs);
-		});
-	}
+    apiAdapter.on('discoveredHubs', function (hubs) {
+      self.trigger(hubs)
+    })
+  },
 
-	, onReloadHubs: function() {
-		apiAdapter.getHubs()
-			.then(HubActions.reloadHubsCompleted)
-			.catch(HubActions.reloadHubsFailed);
-	}
+  onReloadHubs: function () {
+    apiAdapter.getHubs()
+      .then(HubActions.reloadHubsCompleted)
+      .catch(HubActions.reloadHubsFailed)
+  },
 
-	, onReloadHubsCompleted: function(hubs) {
-		this.trigger(hubs);
-	}
+  onReloadHubsCompleted: function (hubs) {
+    this.trigger(hubs)
+  },
 
-	, onReloadHubsFailed: function() {
-
-	}
-});
+  onReloadHubsFailed: function () {}
+})
