@@ -2,7 +2,7 @@ const join = require('path').join
 const ExtractTextPlugin = require('extract-text-webpack-plugin')
 
 module.exports = {
-  entry: [ join(__dirname, 'src', 'client', 'app.jsx') ],
+  entry: [ join(__dirname, 'src', 'client', 'index.jsx') ],
 
   output: {
     filename: 'app.js',
