@@ -19,8 +19,8 @@ function IPCAdapter (ipcMain, webContents) {
     })
   })
 
-  ipcMain.on(IPCAdapterChannel, function (event, arg) {
-    var topic = arg.topic
+  ipcMain.on(IPCAdapterChannel, function (event, envelope) {
+    var topic = envelope.topic
 
     if (topic === 'getHubs') {
       self.jsApi.getDiscoveredHubs()
@@ -28,6 +28,16 @@ function IPCAdapter (ipcMain, webContents) {
           event.sender.send(IPCAdapterChannel, {
             topic: 'getHubs-reply',
             hubs: hubs
+          })
+        })
+    } else if (topic === 'getActivities') {
+      var uuid = envelope.hubUuid
+      self.jsApi.getActivitiesForHubWithUuid(uuid)
+        .then(function (activities) {
+          event.sender.send(IPCAdapterChannel, {
+            topic: 'getActivities-reply',
+            hubUuid: uuid,
+            activities: activities
           })
         })
     }

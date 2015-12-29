@@ -4,6 +4,14 @@ export const INVALIDATE_HUBS = 'INVALIDATE_HUBS'
 export const FETCH_HUBS_REQUEST = 'FETCH_HUBS_REQUEST'
 export const FETCH_HUBS_SUCCESS = 'FETCH_HUBS_SUCCESS'
 export const FETCH_HUBS_FAILED = 'FETCH_HUBS_FAILED'
+export const SET_SELECTED_HUB = 'SET_SELECTED_HUB'
+
+export function setSelectedHubByUuid (hubUuid) {
+  return {
+    type: SET_SELECTED_HUB,
+    hubUuid: hubUuid
+  }
+}
 
 export function invalidateHubs () {
   return {
