@@ -1,8 +1,8 @@
-var React = require('react')
-var Activities = require('./activities')
+import React from 'react'
+import Activities from './activities'
 
-var Hub = React.createClass({
-  render: function () {
+export default class Hub extends React.Component {
+  render () {
     return (
       <div className='l-content l-container'>
         <Activities className='l-sidebar nav is-second-level' />
@@ -10,6 +10,4 @@ var Hub = React.createClass({
       </div>
     )
   }
-})
-
-module.exports = Hub
+}

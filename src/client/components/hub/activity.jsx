@@ -1,0 +1,40 @@
+import React from 'react'
+import Spinner from '../spinner'
+
+export default class Activity extends React.Component {
+  renderIcon (activity) {
+    let icon
+
+    if (activity.baseImageUri && activity.imageKey) {
+      icon = <img src={ this.props.activity.baseImageUri + this.props.activity.imageKey } className='icon' />
+    } else {
+      icon = <i className='fa fa-film icon'></i>
+    }
+
+    return icon
+  }
+
+  render () {
+    const activity = this.props.activity
+    let classNames = 'activity'
+    const spinner = activity.pending ? <Spinner /> : undefined
+
+    if (activity.started) {
+      classNames += ' is-started'
+    }
+
+    return (
+      <span className={ classNames }>
+        { this._renderIcon(activity) }
+		<span className='label'>{ activity.label }</span>
+        { spinner }
+      </span>
+    )
+  }
+}
+
+// propTypes: {
+//   activity: React.PropTypes.shape({
+//     label: React.PropTypes.string.isRequired
+//   })
+// }

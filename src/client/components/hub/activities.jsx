@@ -1,32 +1,15 @@
-var React = require('react')
-var Reflux = require('reflux')
-var Router = require('react-router')
-var activityStore = require('../../stores/activityStore')
-var activityActions = require('../../actions/activityActions')
-var Activity = require('./activity')
-var Spinner = require('../spinner')
+import React from 'react'
+import Activity from './activity'
+import Spinner from '../spinner'
 var isNumber = require('amp-is-number')
 
-var Activities = React.createClass({
-  mixins: [
-    Reflux.connect(activityStore, 'activities'),
-    Router.State
-  ],
+export default class Activities extends React.Component {
+  componentWillReceiveProps () {
+    // this.setState({ activities: [] })
+    // activityActions.loadActivities(this.getParams().uuid)
+  }
 
-  getInitialState: function () {
-    activityActions.loadActivities(this.getParams().uuid)
-
-    return {
-      activities: []
-    }
-  },
-
-  componentWillReceiveProps: function () {
-    this.setState({ activities: [] })
-    activityActions.loadActivities(this.getParams().uuid)
-  },
-
-  _sortActivities: function (activities) {
+  _sortActivities (activities) {
     return activities.sort(function (a, b) {
       var aIsNumber = isNumber(a.activityOrder)
       var bIsNumber = isNumber(b.activityOrder)
@@ -41,25 +24,25 @@ var Activities = React.createClass({
         return 0
       }
     })
-  },
+  }
 
-  _onClickActivity: function (hubUuid, activityId, event) {
+  _onClickActivity (hubUuid, activityId, event) {
     event.preventDefault()
-    activityActions.triggerActivity(hubUuid, activityId)
-  },
+    //activityActions.triggerActivity(hubUuid, activityId)
+  }
 
-  _renderLoadingIndicator: function () {
+  _renderLoadingIndicator () {
     return (
       <div className='loading'>
         <span className='loading-spinner'><Spinner /></span>
         <span className='loading-text'>Fetching Activities...</span>
       </div>
     )
-  },
+  }
 
-  _renderActivityList: function (activities) {
-    var self = this
-    var hubUuid = self.getParams().uuid
+  _renderActivityList (activities) {
+    const self = this
+    const hubUuid = self.getParams().uuid
 
     activities = this._sortActivities(activities)
     return (
@@ -81,11 +64,11 @@ var Activities = React.createClass({
         })
       }</ol>
     )
-  },
+  }
 
-  render: function () {
-    var content
-    var className = this.props.className + ' activities'
+  render () {
+    let content
+    const className = this.props.className + ' activities'
 
     if (this.state.activities.length === 0) {
       content = this._renderLoadingIndicator()
@@ -99,6 +82,4 @@ var Activities = React.createClass({
       </div>
     )
   }
-})
-
-module.exports = Activities
+}
