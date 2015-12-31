@@ -5,6 +5,7 @@ export const FETCH_HUBS_REQUEST = 'FETCH_HUBS_REQUEST'
 export const FETCH_HUBS_SUCCESS = 'FETCH_HUBS_SUCCESS'
 export const FETCH_HUBS_FAILED = 'FETCH_HUBS_FAILED'
 export const SET_SELECTED_HUB = 'SET_SELECTED_HUB'
+export const UPDATE_HUB_FROM_STATE_DIGEST = 'UPDATE_HUB_FROM_STATE_DIGEST'
 
 export function setSelectedHubByUuid (hubUuid) {
   return {

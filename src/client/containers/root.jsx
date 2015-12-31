@@ -2,19 +2,21 @@ import React from 'react'
 import { Provider } from 'react-redux'
 import { Router, Route, IndexRoute } from 'react-router'
 
-import App from '../components/app'
-import Welcome from '../components/welcome'
-import Hub from '../components/hub'
-
-import DevTools from './devTools'
-
 import { configureStore } from '../store'
 import { syncReduxAndRouter } from 'redux-simple-router'
 import { createHistory } from 'history'
 
+import App from '../components/app'
+import Welcome from '../components/welcome'
+import Hub from '../components/hub'
+import DevTools from './devTools'
+import stateDigestAdapter from '../utils/stateDigestAdapter'
+
+// Create and setup the redux store:
 const store = configureStore()
 const history = createHistory()
 syncReduxAndRouter(history, store)
+stateDigestAdapter(store.dispatch)
 
 export default class Root extends React.Component {
   render () {
