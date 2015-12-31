@@ -4,6 +4,7 @@ export const INVALIDATE_ACTIVITIES = 'INVALIDATE_ACTIVITIES'
 export const FETCH_ACTIVITIES_REQUEST = 'FETCH_ACTIVITIES_REQUEST'
 export const FETCH_ACTIVITIES_SUCCESS = 'FETCH_ACTIVITIES_SUCCESS'
 export const FETCH_ACTIVITIES_FAILED = 'FETCH_ACTIVITIES_FAILED'
+export const TRIGGER_ACTIVITY = 'TRIGGER_ACTIVITY'
 
 export function invalidateActivitiesForHubWithUuid (hubUuid) {
   return {
@@ -17,6 +18,20 @@ export function fetchActivitiesForHubWithUuidIfNeeded (hubUuid) {
     if (shouldFetchActivitiesForHubWithUuid(getState(), hubUuid)) {
       return dispatch(fetchActivitiesForHubWithUuid(hubUuid))
     }
+  }
+}
+
+export function triggerActivityWithIdForHubWithUuid (activitiyId, hubUuid) {
+  ipcRenderer.send('IPCAdapter', {
+    topic: 'startActivityForHub',
+    hubUuid: hubUuid,
+    activityId: activitiyId
+  })
+
+  return {
+    type: TRIGGER_ACTIVITY,
+    activitiyId: activitiyId,
+    hubUuid: hubUuid
   }
 }
 

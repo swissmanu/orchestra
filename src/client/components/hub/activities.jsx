@@ -1,6 +1,7 @@
 import React from 'react'
 import Activity from './activity'
 import Spinner from '../spinner'
+import { triggerActivityWithIdForHubWithUuid } from '../../actions/activities'
 import { connect } from 'react-redux'
 import isNumber from 'amp-is-number'
 
@@ -11,7 +12,8 @@ function select (state) {
     .pop()
 
   return {
-    activities: selectedHub.activities
+    activities: selectedHub.activities,
+    hubUuid: selectedHub.uuid
   }
 }
 
@@ -40,7 +42,7 @@ class Activities extends React.Component {
 
   _onClickActivity (hubUuid, activityId, event) {
     event.preventDefault()
-    //activityActions.triggerActivity(hubUuid, activityId)
+    this.props.dispatch(triggerActivityWithIdForHubWithUuid(activityId, hubUuid))
   }
 
   _renderLoadingIndicator () {
@@ -54,8 +56,9 @@ class Activities extends React.Component {
 
   _renderActivityList (activities = []) {
     const self = this
+    const hubUuid = self.props.hubUuid
 
-    activities = this._sortActivities(activities)
+    activities = self._sortActivities(activities)
     return (
       <ol>{
         activities.map(function (activity) {
@@ -64,10 +67,10 @@ class Activities extends React.Component {
           if (activity.started) {
             classNames += ' is-selected' // reuse the nav components ability to show selected items
           }
-          // <a href='' onClick={ self._onClickActivity.bind(self, hubUuid, activity.id) }>
+
           return (
             <li key={ activity.id } className={ classNames }>
-              <a href=''>
+              <a href='' onClick={ self._onClickActivity.bind(self, hubUuid, activity.id) }>
                 <Activity activity={ activity } />
               </a>
             </li>

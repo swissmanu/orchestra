@@ -40,6 +40,10 @@ function IPCAdapter (ipcMain, webContents) {
             activities: activities
           })
         })
+    } else if (topic === 'startActivityForHub') {
+      var hubUuid = envelope.hubUuid
+      var activityId = envelope.activityId
+      self.jsApi.startActivityForHub(hubUuid, activityId)
     }
   })
 }
