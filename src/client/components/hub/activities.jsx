@@ -2,7 +2,7 @@ import React from 'react'
 import Activity from './activity'
 import Spinner from '../spinner'
 import { connect } from 'react-redux'
-var isNumber = require('amp-is-number')
+import isNumber from 'amp-is-number'
 
 function select (state) {
   const selectedHubUuid = state.selectedHub

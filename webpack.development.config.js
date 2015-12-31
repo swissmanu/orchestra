@@ -10,7 +10,7 @@ config.plugins = config.plugins.concat([
 ])
 
 config.module.loaders = config.module.loaders.concat([
-  { test: /\.jsx?$/, loader: 'babel-loader', exclude: /(node_modules)/, query: { presets: ['react', 'es2015'] } }
+  { test: /\.jsx?$/, loaders: ['react-hot', 'babel-loader?presets[]=react,presets[]=es2015'], exclude: /(node_modules)/ }
 ])
 
 module.exports = config
