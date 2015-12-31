@@ -25,7 +25,7 @@ export default class Activity extends React.Component {
 
     return (
       <span className={ classNames }>
-        { this._renderIcon(activity) }
+        { this.renderIcon(activity) }
 		<span className='label'>{ activity.label }</span>
         { spinner }
       </span>

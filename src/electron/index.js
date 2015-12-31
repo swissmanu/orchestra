@@ -26,7 +26,9 @@ app.on('window-all-closed', function () {
 // initialization and is ready to create browser windows.
 app.on('ready', function () {
   // Create the browser window.
-  mainWindow = new BrowserWindow({width: 800, height: 600})
+  mainWindow = new BrowserWindow({width: 1600, height: 800})
+
+  require('./ipcadapter')(ipcMain, mainWindow.webContents)
 
   // and load the index.html of the app.
   if (process.env.NODE_ENV === 'development') {
@@ -35,9 +37,6 @@ app.on('ready', function () {
   } else {
     mainWindow.loadUrl('file://' + __dirname + '/../client/app.html')
   }
-
-  var IPCAdapter = require('./ipcadapter')
-  IPCAdapter(ipcMain, mainWindow.webContents)
 
   // Emitted when the window is closed.
   mainWindow.on('closed', function () {

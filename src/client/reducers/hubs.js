@@ -28,7 +28,7 @@ export default function hubs (prevState = {}, action) {
       })
 
     case INVALIDATE_ACTIVITIES: {
-      const index = lookupHubIndexByUuid(action.hubUuid)
+      const index = lookupHubIndexByUuid(action.hubUuid, prevState.items)
       return extend(prevState, {
         items: [
           ...prevState.items.slice(0, index),
@@ -38,36 +38,48 @@ export default function hubs (prevState = {}, action) {
       })
     }
     case FETCH_ACTIVITIES_REQUEST: {
-      const index = lookupHubIndexByUuid(action.hubUuid)
+      const index = lookupHubIndexByUuid(action.hubUuid, prevState.items)
+      console.log(index)
       return extend(prevState, {
         items: [
           ...prevState.items.slice(0, index),
-          extend(prevState.items[index].activities, { isFetching: true, didInvalidate: false }),
+          extend(prevState.items[index], {
+            activities: extend(prevState.items[index].activities, {
+              isFetching: true,
+              didInvalidate: false
+            })
+          }),
           ...prevState.items.slice(index + 1)
         ]
       })
     }
     case FETCH_ACTIVITIES_SUCCESS: {
-      const index = lookupHubIndexByUuid(action.hubUuid)
+      const index = lookupHubIndexByUuid(action.hubUuid, prevState.items)
       return extend(prevState, {
         items: [
           ...prevState.items.slice(0, index),
-          extend(prevState.items[index].activities, {
-            isFetching: false,
-            didInvalidate: false,
-            lastUpdated: action.recivedAt,
-            items: action.activities
+          extend(prevState.items[index], {
+            activities: extend(prevState.items[index].activities, {
+              isFetching: false,
+              didInvalidate: false,
+              lastUpdated: action.recivedAt,
+              items: action.activities
+            })
           }),
           ...prevState.items.slice(index + 1)
         ]
       })
     }
     case FETCH_ACTIVITIES_FAILED: {
-      const index = lookupHubIndexByUuid(action.hubUuid)
+      const index = lookupHubIndexByUuid(action.hubUuid, prevState.items)
       return extend(prevState, {
         items: [
           ...prevState.items.slice(0, index),
-          extend(prevState.items[index].activities, { isFetching: false }),
+          extend(prevState.items[index], {
+            activities: extend(prevState.items[index].activities, {
+              isFetching: false
+            })
+          }),
           ...prevState.items.slice(index + 1)
         ]
       })
@@ -84,9 +96,9 @@ function lookupHubIndexByUuid (hubUuid, hubs) {
   hubs.some((hub, index) => {
     if (hub.uuid === hubUuid) {
       foundIndex = index
-      return false
+      return true
     }
-    return true
+    return false
   })
 
   return foundIndex

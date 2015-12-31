@@ -28,7 +28,7 @@ function receiveActivities (hubUuid, activities) {
   return {
     type: FETCH_ACTIVITIES_SUCCESS,
     hubUuid: hubUuid,
-    activites: activities,
+    activities: activities,
     recivedAt: Date.now()
   }
 }

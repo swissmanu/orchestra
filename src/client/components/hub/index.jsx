@@ -1,11 +1,15 @@
 import React from 'react'
 import Activities from './activities'
 import { setSelectedHubByUuid } from '../../actions/hubs'
+import { fetchActivitiesForHubWithUuidIfNeeded } from '../../actions/activities'
 import { connect } from 'react-redux'
 
 class Hub extends React.Component {
   componentWillMount () {
-    this.props.dispatch(setSelectedHubByUuid(this.props.params.uuid))
+    const hubUuid = this.props.params.uuid
+
+    this.props.dispatch(setSelectedHubByUuid(hubUuid))
+    this.props.dispatch(fetchActivitiesForHubWithUuidIfNeeded(hubUuid))
   }
 
   render () {

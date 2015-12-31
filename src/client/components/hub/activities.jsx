@@ -1,9 +1,21 @@
 import React from 'react'
 import Activity from './activity'
 import Spinner from '../spinner'
+import { connect } from 'react-redux'
 var isNumber = require('amp-is-number')
 
-export default class Activities extends React.Component {
+function select (state) {
+  const selectedHubUuid = state.selectedHub
+  const selectedHub = state.hubs.items
+    .filter((hub) => hub.uuid === selectedHubUuid)
+    .pop()
+
+  return {
+    activities: selectedHub.activities
+  }
+}
+
+class Activities extends React.Component {
   componentWillReceiveProps () {
     // this.setState({ activities: [] })
     // activityActions.loadActivities(this.getParams().uuid)
@@ -40,9 +52,8 @@ export default class Activities extends React.Component {
     )
   }
 
-  _renderActivityList (activities) {
+  _renderActivityList (activities = []) {
     const self = this
-    const hubUuid = self.getParams().uuid
 
     activities = this._sortActivities(activities)
     return (
@@ -53,10 +64,10 @@ export default class Activities extends React.Component {
           if (activity.started) {
             classNames += ' is-selected' // reuse the nav components ability to show selected items
           }
-
+          // <a href='' onClick={ self._onClickActivity.bind(self, hubUuid, activity.id) }>
           return (
             <li key={ activity.id } className={ classNames }>
-              <a href='' onClick={ self._onClickActivity.bind(self, hubUuid, activity.id) }>
+              <a href=''>
                 <Activity activity={ activity } />
               </a>
             </li>
@@ -70,10 +81,10 @@ export default class Activities extends React.Component {
     let content
     const className = this.props.className + ' activities'
 
-    if (this.state.activities.length === 0) {
+    if (this.props.activities.isFetching) {
       content = this._renderLoadingIndicator()
     } else {
-      content = this._renderActivityList(this.state.activities)
+      content = this._renderActivityList(this.props.activities.items)
     }
 
     return (
@@ -83,3 +94,5 @@ export default class Activities extends React.Component {
     )
   }
 }
+
+module.exports = connect(select)(Activities)
