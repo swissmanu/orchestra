@@ -9,12 +9,12 @@ import Hub from '../components/hub'
 import DevTools from './devTools'
 
 import { configureStore } from '../store'
-// import { syncReduxAndRouter } from 'redux-simple-router'
-// import { createHistory } from 'history'
+import { syncReduxAndRouter } from 'redux-simple-router'
+import { createHistory } from 'history'
 
 const store = configureStore()
-// const history = createHistory()
-// syncReduxAndRouter(history, store)
+const history = createHistory()
+syncReduxAndRouter(history, store)
 
 export default class Root extends React.Component {
   render () {

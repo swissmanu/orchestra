@@ -95,4 +95,13 @@ class Activities extends React.Component {
   }
 }
 
+Activities.propTypes = {
+  className: React.PropTypes.string,
+  dispatch: React.PropTypes.func,
+  activities: React.PropTypes.shape({
+    items: React.PropTypes.array,
+    isFetching: React.PropTypes.bool
+  })
+}
+
 module.exports = connect(select)(Activities)

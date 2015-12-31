@@ -33,8 +33,10 @@ export default class Activity extends React.Component {
   }
 }
 
-// propTypes: {
-//   activity: React.PropTypes.shape({
-//     label: React.PropTypes.string.isRequired
-//   })
-// }
+Activity.propTypes = {
+  activity: React.PropTypes.shape({
+    label: React.PropTypes.string.isRequired,
+    baseImageUri: React.PropTypes.string,
+    imageKey: React.PropTypes.string
+  })
+}

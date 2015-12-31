@@ -6,8 +6,14 @@ import { connect } from 'react-redux'
 
 class Hub extends React.Component {
   componentWillMount () {
-    const hubUuid = this.props.params.uuid
+    this.updateWithSelectedHubUuid(this.props.params.uuid)
+  }
 
+  componentWillReceiveProps (nextProps) {
+    this.updateWithSelectedHubUuid(nextProps.params.uuid)
+  }
+
+  updateWithSelectedHubUuid (hubUuid) {
     this.props.dispatch(setSelectedHubByUuid(hubUuid))
     this.props.dispatch(fetchActivitiesForHubWithUuidIfNeeded(hubUuid))
   }
@@ -20,6 +26,13 @@ class Hub extends React.Component {
       </div>
     )
   }
+}
+
+Hub.propTypes = {
+  dispatch: React.PropTypes.func,
+  params: React.PropTypes.shape({
+    uuid: React.PropTypes.string
+  })
 }
 
 export default connect()(Hub)

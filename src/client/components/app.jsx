@@ -4,7 +4,7 @@ import HubList from './hubList'
 require('../scss/app.scss')
 
 export default class App extends React.Component {
-  render() {
+  render () {
     return (
       <section className='l-container'>
         <HubList className='l-sidebar nav' />
@@ -12,4 +12,8 @@ export default class App extends React.Component {
       </section>
     )
   }
+}
+
+App.propTypes = {
+  children: React.PropTypes.object
 }
