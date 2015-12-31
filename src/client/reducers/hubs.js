@@ -39,7 +39,6 @@ export default function hubs (prevState = {}, action) {
     }
     case FETCH_ACTIVITIES_REQUEST: {
       const index = lookupHubIndexByUuid(action.hubUuid, prevState.items)
-      console.log(index)
       return extend(prevState, {
         items: [
           ...prevState.items.slice(0, index),
