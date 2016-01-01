@@ -1,5 +1,6 @@
 import React from 'react'
 import Spinner from '../spinner'
+import ACTIVITIY_STATUS from '../../utils/activityStatus'
 
 export default class Activity extends React.Component {
   renderIcon (activity) {
@@ -17,7 +18,7 @@ export default class Activity extends React.Component {
   render () {
     const activity = this.props.activity
     let classNames = 'activity'
-    const spinner = activity.pending ? <Spinner /> : undefined
+    const spinner = activity.activityStatus === ACTIVITIY_STATUS.STARTING ? <Spinner /> : undefined
 
     if (activity.started) {
       classNames += ' is-started'
