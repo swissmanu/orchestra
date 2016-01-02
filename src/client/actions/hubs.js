@@ -1,4 +1,4 @@
-const ipcRenderer = window.require('electron').ipcRenderer
+import ipcAdapter from '../utils/ipcAdapter'
 
 export const INVALIDATE_HUBS = 'INVALIDATE_HUBS'
 export const FETCH_HUBS_REQUEST = 'FETCH_HUBS_REQUEST'
@@ -50,13 +50,8 @@ function receiveHubs (hubs) {
 function fetchHubs () {
   return (dispatch) => {
     dispatch(requestHubs())
-
-    ipcRenderer.send('IPCAdapter', { topic: 'getHubs' })
-    ipcRenderer.on('IPCAdapter', function (event, envelope) {
-      if (envelope.topic === 'getHubs-reply' && Array.isArray(envelope.hubs)) {
-        dispatch(receiveHubs(envelope.hubs))
-      }
-    })
+    ipcAdapter.getHubs()
+      .then((hubs) => dispatch(receiveHubs(hubs)))
   }
 }
 
