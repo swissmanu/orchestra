@@ -24,10 +24,8 @@ class HubList extends React.Component {
 
     if (Array.isArray(this.props.hubs.items)) {
       let hubs = this.props.hubs.items.map((hub) => {
-        var classNames = 'item'
-
         return (
-          <li key={ hub.uuid } className={ classNames }>
+          <li key={ hub.uuid } className='item hub'>
             <Link to={ '/hub/' + hub.uuid } activeClassName='is-selected'>{ hub.friendlyName }</Link>
           </li>
         )

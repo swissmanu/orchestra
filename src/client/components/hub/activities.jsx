@@ -3,6 +3,7 @@ import Activity from './activity'
 import Spinner from '../spinner'
 import { triggerActivityWithIdForHubWithUuid } from '../../actions/activities'
 import { connect } from 'react-redux'
+import ACTIVITIY_STATUS from '../../utils/activityStatus'
 import isNumber from 'amp-is-number'
 
 function select (state) {
@@ -62,15 +63,15 @@ class Activities extends React.Component {
     return (
       <ol>{
         activities.map(function (activity) {
-          var classNames = 'item'
+          let linkClassNames
 
-          if (activity.started) {
-            classNames += ' is-selected' // reuse the nav components ability to show selected items
+          if (activity.activityStatus === ACTIVITIY_STATUS.STARTING || activity.activityStatus == ACTIVITIY_STATUS.STARTED) {
+            linkClassNames += ' is-selected' // reuse the nav components ability to show selected items
           }
 
           return (
-            <li key={ activity.id } className={ classNames }>
-              <a href='' onClick={ self._onClickActivity.bind(self, hubUuid, activity.id) }>
+            <li key={ activity.id } className='item activity'>
+              <a href='' className={ linkClassNames } onClick={ self._onClickActivity.bind(self, hubUuid, activity.id) }>
                 <Activity activity={ activity } />
               </a>
             </li>

@@ -19,7 +19,10 @@ module.exports = {
       // { test: /\.tsx?$/, loader: 'ts-loader' }, // all files with a `.ts` or `.tsx` extension will be handled by `ts-loader`
       //{ test: /\.jsx?$/, loader: 'babel', exclude: /(node_modules)/, query: { presets: ['react', 'es2015'] } }
     //   { test: /\.html$/, loader: 'file?name=[name].[ext]' }
-      { test: /\.scss$/, loader: ExtractTextPlugin.extract('css!sass') }
+
+      { test: /\.scss$/, loader: ExtractTextPlugin.extract('css!sass') },
+      { test: /\.woff$/, loader: 'url-loader?limit=100000' }
+
     ]
   },
 

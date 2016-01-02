@@ -17,15 +17,10 @@ export default class Activity extends React.Component {
 
   render () {
     const activity = this.props.activity
-    let classNames = 'activity'
     const spinner = activity.activityStatus === ACTIVITIY_STATUS.STARTING ? <Spinner /> : undefined
 
-    if (activity.started) {
-      classNames += ' is-started'
-    }
-
     return (
-      <span className={ classNames }>
+      <span>
         { this.renderIcon(activity) }
         <span className='label'>{ activity.label }</span>
         { spinner }
