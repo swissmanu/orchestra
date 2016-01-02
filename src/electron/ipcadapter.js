@@ -44,6 +44,16 @@ function IPCAdapter (ipcMain, webContents) {
       var hubUuid = envelope.hubUuid
       var activityId = envelope.activityId
       self.jsApi.startActivityForHub(hubUuid, activityId)
+    } else if (topic === 'getCurrentActivityForHub') {
+      var hubUuid = envelope.hubUuid
+      self.jsApi.getCurrentActivityForHub(hubUuid)
+        .then(function (currentActivityId) {
+          event.sender.send(IPCAdapterChannel, {
+            topic: 'getCurrentActivityForHub-reply',
+            hubUuid: hubUuid,
+            activityId: currentActivityId
+          })
+        })
     }
   })
 }
