@@ -59,13 +59,18 @@ class Activities extends React.Component {
     const self = this
     const hubUuid = self.props.hubUuid
 
+    if (!activities.some((activity) => activity.activityStatus === ACTIVITIY_STATUS.STARTED)) {
+      activities = activities
+        .filter((activity) => activity.id !== '-1')
+    }
     activities = self._sortActivities(activities)
+
     return (
       <ol>{
         activities.map(function (activity) {
           let linkClassNames
 
-          if (activity.activityStatus === ACTIVITIY_STATUS.STARTING || activity.activityStatus == ACTIVITIY_STATUS.STARTED) {
+          if (activity.activityStatus === ACTIVITIY_STATUS.STARTING || activity.activityStatus === ACTIVITIY_STATUS.STARTED) {
             linkClassNames += ' is-selected' // reuse the nav components ability to show selected items
           }
 
