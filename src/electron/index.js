@@ -1,6 +1,8 @@
-var app = require('app')
-var BrowserWindow = require('browser-window')
-var ipcMain = require('electron').ipcMain
+var electron = require('electron')
+var app = electron.app
+var BrowserWindow = electron.BrowserWindow
+var ipcMain = electron.ipcMain
+var join = require('path').join
 
 // Report crashes to our server.
 require('crash-reporter').start()
@@ -26,16 +28,16 @@ app.on('window-all-closed', function () {
 // initialization and is ready to create browser windows.
 app.on('ready', function () {
   // Create the browser window.
-  mainWindow = new BrowserWindow({width: 800, height: 600})
+  mainWindow = new BrowserWindow({ width: 800, height: 600 })
 
-  require('./ipcadapter')(ipcMain, mainWindow.webContents)
+  require('./ipcAdapter')(ipcMain, mainWindow.webContents)
 
   // and load the index.html of the app.
   if (process.env.NODE_ENV === 'development') {
-    mainWindow.loadURL('http://localhost:8080/hot-dev-app.html')
+    mainWindow.loadURL('http://localhost:8080/index.html')
     mainWindow.openDevTools()
   } else {
-    mainWindow.loadURL('file://' + __dirname + '/../client/app.html')
+    mainWindow.loadURL('file://' + join(app.getAppPath(), 'dist', 'client.html'))
   }
 
   // Emitted when the window is closed.
