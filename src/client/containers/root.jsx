@@ -9,7 +9,6 @@ import { createHistory } from 'history'
 import App from '../components/app'
 import Welcome from '../components/welcome'
 import Hub from '../components/hub'
-import DevTools from './devTools'
 import stateDigestAdapter from '../utils/stateDigestAdapter'
 
 // Create and setup the redux store:
@@ -29,7 +28,14 @@ export default class Root extends React.Component {
               <Route path='/hub/:uuid' component={ Hub } />
             </Route>
           </Router>
-          <DevTools />
+          {
+            (() => {
+              if (process.env.NODE_ENV !== 'production') {
+                const DevTools = require('./devTools')
+                return <DevTools />
+              }
+            })()
+          }
         </div>
       </Provider>
       )
