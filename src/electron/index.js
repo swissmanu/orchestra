@@ -1,8 +1,11 @@
-var electron = require('electron')
-var app = electron.app
-var BrowserWindow = electron.BrowserWindow
-var ipcMain = electron.ipcMain
-var join = require('path').join
+'use strict'
+
+const electron = require('electron')
+const app = electron.app
+const BrowserWindow = electron.BrowserWindow
+const ipcMain = electron.ipcMain
+const IPCAdapter = require('./ipcAdapter')
+const join = require('path').join
 
 // Report crashes to our server.
 require('crash-reporter').start()
@@ -13,7 +16,7 @@ if (process.env.NODE_ENV === 'development') {
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
-var mainWindow = null
+let mainWindow = null
 
 // Quit when all windows are closed.
 app.on('window-all-closed', function () {
@@ -30,8 +33,6 @@ app.on('ready', function () {
   // Create the browser window.
   mainWindow = new BrowserWindow({ width: 800, height: 600 })
 
-  require('./ipcAdapter')(ipcMain, mainWindow.webContents)
-
   // and load the index.html of the app.
   if (process.env.NODE_ENV === 'development') {
     mainWindow.loadURL('http://localhost:8080/index.html')
@@ -39,6 +40,8 @@ app.on('ready', function () {
   } else {
     mainWindow.loadURL('file://' + join(app.getAppPath(), 'dist', 'client.html'))
   }
+
+  const ipcRenderer = new IPCAdapter(ipcMain, mainWindow.webContents)
 
   // Emitted when the window is closed.
   mainWindow.on('closed', function () {

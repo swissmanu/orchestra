@@ -1,48 +1,57 @@
 import q from 'q'
+import uuid from 'node-uuid'
 import ACTIVITIY_STATUS from './activityStatus'
 
 const ipcRenderer = window.require('electron').ipcRenderer
 
-// TODO dont do ipcRenderer.on calls without cleaning them up afterwards
-
 class IPCAdapter {
   constructor (ipcRenderer) {
     this.ipcRenderer = ipcRenderer
+    this.awaitingResponseHandlers = {}
+
+    ipcRenderer.on('IPCAdapter', (event, envelope) => {
+      const { id, payload } = envelope
+      const awaitingResponseHandler = this.awaitingResponseHandlers[id]
+
+      if (awaitingResponseHandler !== undefined) {
+        awaitingResponseHandler.deferred.resolve(payload)
+        delete this.awaitingResponseHandlers[id]
+      }
+    })
+  }
+
+  ask (topic, payload, processResponsePayload = (payload) => payload) {
+    const deferred = q.defer()
+    const id = uuid.v4()
+    const timestamp = new Date()
+
+    // If a function was given as payload simply assume that we should use that
+    // function as processResponsePayload:
+    if (typeof (payload) === 'function') {
+      processResponsePayload = payload
+    }
+
+    this.awaitingResponseHandlers[id] = { deferred, id, timestamp }
+    this.ipcRenderer.send('IPCAdapter', { id, topic, payload })
+
+    return deferred.promise
+      .then((payload) => processResponsePayload(payload))
+  }
+
+  tell (topic, payload) {
+    const id = uuid.v4()
+    this.ipcRenderer.send('IPCAdapter', { id, topic, payload })
+    return q.when()
   }
 
   getHubs () {
-    const deferred = q.defer()
-
-    this.ipcRenderer.send('IPCAdapter', { topic: 'getHubs' })
-    this.ipcRenderer.on('IPCAdapter', function (event, envelope) {
-      if (envelope.topic === 'getHubs-reply' && Array.isArray(envelope.hubs)) {
-        deferred.resolve(envelope.hubs)
-      }
-    })
-
-    return deferred.promise
+    return this.ask('getHubs', (reply) => reply.hubs)
   }
 
   getActivities (hubUuid) {
-    const deferredGetActivities = q.defer()
-    const deferredGetCurrentActivityForHub = q.defer()
-
-    ipcRenderer.send('IPCAdapter', { topic: 'getActivities', hubUuid: hubUuid })
-    ipcRenderer.send('IPCAdapter', { topic: 'getCurrentActivityForHub', hubUuid: hubUuid })
-
-    ipcRenderer.on('IPCAdapter', function (event, envelope) {
-      const { topic } = envelope
-
-      if (topic === 'getActivities-reply' && envelope.hubUuid && Array.isArray(envelope.activities)) {
-        deferredGetActivities.resolve(envelope.activities)
-      } else if (topic === 'getCurrentActivityForHub-reply') {
-        deferredGetCurrentActivityForHub.resolve(envelope.activityId)
-      }
-    })
-
     return q.all([
-      deferredGetActivities.promise,
-      deferredGetCurrentActivityForHub.promise
+      this.ask('getActivities', { hubUuid }, (payload) => payload.activities),
+      this.ask('getCurrentActivityForHub', { hubUuid }, (payload) => payload.activityId)
     ])
       .then((results) => {
         const activities = results[0]
@@ -61,13 +70,7 @@ class IPCAdapter {
   }
 
   startActivityForHub (activityId, hubUuid) {
-    ipcRenderer.send('IPCAdapter', {
-      topic: 'startActivityForHub',
-      hubUuid: hubUuid,
-      activityId: activityId
-    })
-
-    return q.when()
+    return this.tell('startActivityForHub', { hubUuid, activityId })
   }
 }
 

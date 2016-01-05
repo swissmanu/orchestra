@@ -26,6 +26,7 @@
     "amp-is-string": "^1.0.1",
     "browser-request": "^0.3.3",
     "history": "^1.17.0",
+    "node-uuid": "^1.4.7",
     "orchestra-jsapi": "^1.0.0",
     "q": "^1.1.2",
     "react": "^0.14.3",
