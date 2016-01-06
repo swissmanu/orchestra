@@ -1,57 +1,23 @@
 import q from 'q'
-import uuid from 'node-uuid'
 import ACTIVITIY_STATUS from './activityStatus'
+import IPCAdapter from '../../shared/ipcAdapter'
 
 const ipcRenderer = window.require('electron').ipcRenderer
 
-class IPCAdapter {
+class ClientIPCAdapter extends IPCAdapter {
   constructor (ipcRenderer) {
+    super(ipcRenderer.send.bind(ipcRenderer), ipcRenderer.on.bind(ipcRenderer))
     this.ipcRenderer = ipcRenderer
-    this.awaitingResponseHandlers = {}
-
-    ipcRenderer.on('IPCAdapter', (event, envelope) => {
-      const { id, payload } = envelope
-      const awaitingResponseHandler = this.awaitingResponseHandlers[id]
-
-      if (awaitingResponseHandler !== undefined) {
-        awaitingResponseHandler.deferred.resolve(payload)
-        delete this.awaitingResponseHandlers[id]
-      }
-    })
-  }
-
-  ask (topic, payload, processResponsePayload = (payload) => payload) {
-    const deferred = q.defer()
-    const id = uuid.v4()
-    const timestamp = new Date()
-
-    // If a function was given as payload simply assume that we should use that
-    // function as processResponsePayload:
-    if (typeof (payload) === 'function') {
-      processResponsePayload = payload
-    }
-
-    this.awaitingResponseHandlers[id] = { deferred, id, timestamp }
-    this.ipcRenderer.send('IPCAdapter', { id, topic, payload })
-
-    return deferred.promise
-      .then((payload) => processResponsePayload(payload))
-  }
-
-  tell (topic, payload) {
-    const id = uuid.v4()
-    this.ipcRenderer.send('IPCAdapter', { id, topic, payload })
-    return q.when()
   }
 
   getHubs () {
-    return this.ask('getHubs', (reply) => reply.hubs)
+    return this.ask('getHubs', (response) => response.hubs)
   }
 
   getActivities (hubUuid) {
     return q.all([
-      this.ask('getActivities', { hubUuid }, (payload) => payload.activities),
-      this.ask('getCurrentActivityForHub', { hubUuid }, (payload) => payload.activityId)
+      this.ask('getActivities', { hubUuid }, (response) => response.activities),
+      this.ask('getCurrentActivityForHub', { hubUuid }, (response) => response.activityId)
     ])
       .then((results) => {
         const activities = results[0]
@@ -74,5 +40,5 @@ class IPCAdapter {
   }
 }
 
-const ipcAdapter = new IPCAdapter(ipcRenderer)
+const ipcAdapter = new ClientIPCAdapter(ipcRenderer)
 export default ipcAdapter

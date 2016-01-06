@@ -4,8 +4,8 @@ const electron = require('electron')
 const app = electron.app
 const BrowserWindow = electron.BrowserWindow
 const ipcMain = electron.ipcMain
-const IPCAdapter = require('./ipcAdapter')
 const join = require('path').join
+const IPCAdapter = require('./ipcAdapter')
 
 // Report crashes to our server.
 require('crash-reporter').start()
@@ -32,6 +32,7 @@ app.on('window-all-closed', function () {
 app.on('ready', function () {
   // Create the browser window.
   mainWindow = new BrowserWindow({ width: 800, height: 600 })
+  const ipcAdapter = new IPCAdapter(ipcMain, mainWindow.webContents)
 
   // and load the index.html of the app.
   if (process.env.NODE_ENV === 'development') {
@@ -39,9 +40,8 @@ app.on('ready', function () {
     mainWindow.openDevTools()
   } else {
     mainWindow.loadURL('file://' + join(app.getAppPath(), 'dist', 'client.html'))
+    mainWindow.openDevTools()
   }
-
-  const ipcRenderer = new IPCAdapter(ipcMain, mainWindow.webContents)
 
   // Emitted when the window is closed.
   mainWindow.on('closed', function () {
@@ -50,8 +50,4 @@ app.on('ready', function () {
     // when you should delete the corresponding element.
     mainWindow = null
   })
-
-  if (process.env.NODE_ENV === 'dev') {
-    // require('electron-connect').client.create(mainWindow)
-  }
 })

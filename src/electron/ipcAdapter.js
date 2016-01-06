@@ -1,77 +1,53 @@
 'use strict'
 
-var JsApi = require('orchestra-jsapi')
-var IPCAdapterChannel = 'IPCAdapter'
+const q = require('q')
+const JsApi = require('orchestra-jsapi')
+const IPCAdapter = require('../shared/ipcAdapter')
 
-module.exports = class IPCAdapter {
+class ElectronIPCAdapter extends IPCAdapter {
   constructor (ipcMain, webContents) {
-    var self = {}
+    super(webContents.send.bind(webContents), ipcMain.on.bind(ipcMain))
+
+    const self = this
+
     self.jsApi = new JsApi()
 
-    this.webContents = webContents
-
-    self.jsApi.on('discoveredHubs', function (hubs) {
-      webContents.send(IPCAdapterChannel, {
-        topic: 'discoveredHubs',
-        hubs: hubs
-      })
+    self.jsApi.on('discoveredHubs', (hubs) => {
+      self.tell('discoveredHubs', { hubs })
     })
 
     self.jsApi.on('stateDigest', function (stateDigest) {
-      webContents.send(IPCAdapterChannel, {
-        topic: 'stateDigest',
-        stateDigest: stateDigest
-      })
+      self.tell('stateDigest', { stateDigest })
     })
 
-    ipcMain.on(IPCAdapterChannel, function (event, envelope) {
-      const topic = envelope.topic
-      const id = envelope.id
+    self.registerTopic('getHubs', () => {
+      return self.jsApi.getDiscoveredHubs().then((hubs) => { return { hubs } })
+    })
 
-      if (topic === 'getHubs') {
-        self.jsApi.getDiscoveredHubs()
-          .then(function (hubs) {
-            event.sender.send(IPCAdapterChannel, {
-              topic: topic,
-              id: id,
-              payload: {
-                hubs: hubs
-              }
-            })
-          })
-      } else if (topic === 'getActivities') {
-        var uuid = envelope.payload.hubUuid
+    self.registerTopic('getActivities', (requestPayload) => {
+      const hubUuid = requestPayload.hubUuid
+      return self.jsApi.getActivitiesForHubWithUuid(hubUuid)
+        .then((activities) => {
+          return { hubUuid, activities }
+        })
+    })
 
-        self.jsApi.getActivitiesForHubWithUuid(uuid)
-          .then(function (activities) {
-            event.sender.send(IPCAdapterChannel, {
-              id: id,
-              payload: {
-                hubUuid: uuid,
-                activities: activities
-              }
-            })
-          })
-      } else if (topic === 'startActivityForHub') {
-        var hubUuid = envelope.payload.hubUuid
-        var activityId = envelope.payload.activityId
+    self.registerTopic('getCurrentActivityForHub', (requestPayload) => {
+      const hubUuid = requestPayload.hubUuid
+      return self.jsApi.getCurrentActivityForHub(hubUuid)
+        .then(function (currentActivityId) {
+          return { hubUuid, activityId: currentActivityId }
+        })
+    })
 
-        self.jsApi.startActivityForHub(hubUuid, activityId)
-      } else if (topic === 'getCurrentActivityForHub') {
-        var hubUuid = envelope.payload.hubUuid
+    self.registerTopic('startActivityForHub', (requestPayload) => {
+      const activityId = requestPayload.activityId
+      const hubUuid = requestPayload.hubUuid
 
-        self.jsApi.getCurrentActivityForHub(hubUuid)
-          .then(function (currentActivityId) {
-            event.sender.send(IPCAdapterChannel, {
-              topic: topic,
-              id: id,
-              payload: {
-                hubUuid: hubUuid,
-                activityId: currentActivityId
-              }
-            })
-          })
-      }
+      self.jsApi.startActivityForHub(hubUuid, activityId)
+      return q.when()
     })
   }
 }
+
+module.exports = ElectronIPCAdapter
