@@ -8,9 +8,19 @@ const IPCAdapterChannel = 'IPCAdapter'
 // TODO extract in own npm module?
 
 /**
- * The IPCAdapter base class allows to implement a communication partner for
- * inter process communication. This was developed with Electron in mind. See
- * following examples for a short overview.
+ * <p>
+ *   IPCAdapter is a base class for implementing communication partners which
+ *   use [Electrons]{@link http://electron.atom.io/} Inter Process Communication
+ *   (IPC) facilities.
+ * </p>
+ * <p>
+ *   With {@link IPCAdapter#registerTopic} you can register a topic which can be
+ *   called by the other peer. Vica versa, {@link IPCAdapter#ask} and
+ *   {@link IPCAdapter#tell} allow to call upon such topics.
+ * </p>
+ * <p>
+ *   IPCAdapter is thought to be subclassed on each peer.
+ * </p>
  *
  * @example <caption>Create IPCAdapter in Host Process</caption>
  * const electron = require('electron')
@@ -45,10 +55,10 @@ class IPCAdapter {
   /**
    * Creates a new IPCAdapter and sets up the communication stack.
    *
-   * @param  {function} send A function that allows sending an event via the
-   *                         IPC infrastructure.
-   * @param  {function} on A function that allows setting up a listener on the
-   *                       IPC infrastructure.
+   * @param {function} send A function that allows sending an event via the IPC
+   *                        infrastructure
+   * @param {function} on A function that allows setting up a listener on the
+   *                      IPC infrastructure
    */
   constructor (send, on) {
     this.send = send
@@ -78,9 +88,10 @@ class IPCAdapter {
    * Register a topic which this IPCAdapter should be able to call upon. Given
    * handler function has to return a promise.
    *
-   * @param  {string} topic - Name of the topic to register
-   * @param  {function} handler - Handler function to register for given topic
-   * @return {promise} containing the response to send to the caller
+   * @param {string} topic Name of the topic to register
+   * @param {function} handler Handler function to register for given topic
+   * @return {promise} A promise resolving with the response that should be sent
+   *                   to the caller.
    */
   registerTopic (topic, handler) {
     this.topicHandlers[topic] = handler
@@ -89,20 +100,22 @@ class IPCAdapter {
   /**
    * Request a response for given topic of the counterparty. The payload
    * parameter will be sent along with your request. The processResponsePayload
-   * function allows you to process the returned response before exposing it.
+   * function allows you to process the returned response before exposing it. If
+   * you want to just send a message without waiting for response, see
+   * {@link IPCAdapter#tell}.
    *
-   * @param  {string} topic Topic to request response for
-   * @param  {object} payload Data to send to the counterparty. This is
-   *                          optional. Default is undefined. You can pass
-   *                          processResponsePayload instead of payload for a
-   *                          shorter function call signature.
-   * @param  {function} processResponsePayload Function to process returned
-   *                                           response with. This is
-   *                                           optional.
-   *                                           Default will just return the
-   *                                           response from the counterparty.
-   * @return {promise} that resolves with the value processResponsePayload
-   *                   returns
+   * @param {string} topic Topic to request response for
+   * @param {object} payload Data to send to the counterparty. This is
+   *                         optional. Default is undefined. You can pass
+   *                         processResponsePayload instead of payload for a
+   *                         shorter function call signature.
+   * @param {function} processResponsePayload Function to process returned
+   *                                          response with. This is
+   *                                          optional. Default will just return
+   *                                          the response from the
+   *                                          counterparty.
+   * @return {promise} A promise that resolves with the value
+   *                   processResponsePayload returns.
    */
   ask (topic, payload, processResponsePayload) {
     const deferred = q.defer()
@@ -127,17 +140,18 @@ class IPCAdapter {
   }
 
   /**
-   * Same as ask, tell allows to send a request to the communication
-   * counterparty. Instead expecting a response, this is "fire and forget". So
-   * the returned promise will get resolved immediately, no matter what the
-   * other side returns (if it returns anything at all).
+   * Same as {@link IPCAdapter#ask}, tell allows to send a request to the
+   * communication counterparty. Instead expecting a response, this is "fire and
+   * forget". So the returned promise will get resolved immediately, no matter
+   * what the other side returns (if it returns anything at all).
    *
-   * @param  {string} topic Topic to request response for
-   * @param  {object} payload Data to send to the counterparty. This is
-   *                          optional. Default is undefined. You can pass
-   *                          processResponsePayload instead of payload for a
-   *                          shorter function call signature.
-   * @return {promise} that gets resolved immediately after the request was sent
+   * @param {string} topic Topic to request response for
+   * @param {object} payload Data to send to the counterparty. This is
+   *                         optional. Default is undefined. You can pass
+   *                         processResponsePayload instead of payload for a
+   *                         shorter function call signature.
+   * @return {promise} A promise that gets resolved immediately after the
+   *                   request was sent
    */
   tell (topic, payload) {
     const id = uuid.v4()
