@@ -1,8 +1,7 @@
 'use strict'
 
-const q = require('q')
+const IPCAdapter = require('electron-ipc-adapter')
 const JsApi = require('orchestra-jsapi')
-const IPCAdapter = require('../shared/ipcAdapter')
 
 class ElectronIPCAdapter extends IPCAdapter {
   constructor (ipcMain, webContents) {
@@ -16,8 +15,10 @@ class ElectronIPCAdapter extends IPCAdapter {
       self.tell('discoveredHubs', { hubs })
     })
 
-    self.jsApi.on('stateDigest', function (stateDigest) {
-      self.tell('stateDigest', { stateDigest })
+    self.jsApi.on('stateDigest', function (stateDigestEvent) {
+      const stateDigest = stateDigestEvent.stateDigest
+      const hub = stateDigestEvent.hub
+      self.tell('stateDigest', { stateDigest, hub })
     })
 
     self.registerTopic('getHubs', () => {
@@ -45,7 +46,7 @@ class ElectronIPCAdapter extends IPCAdapter {
       const hubUuid = requestPayload.hubUuid
 
       self.jsApi.startActivityForHub(hubUuid, activityId)
-      return q.when()
+      return Promise.resolve()
     })
   }
 }

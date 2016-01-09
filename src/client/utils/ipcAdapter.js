@@ -1,27 +1,25 @@
-import q from 'q'
 import ACTIVITIY_STATUS from './activityStatus'
-import IPCAdapter from '../../shared/ipcAdapter'
+const IPCAdapter = require('electron-ipc-adapter')
 
 const ipcRenderer = window.require('electron').ipcRenderer
 
 class ClientIPCAdapter extends IPCAdapter {
   constructor (ipcRenderer) {
     super(ipcRenderer.send.bind(ipcRenderer), ipcRenderer.on.bind(ipcRenderer))
-    this.ipcRenderer = ipcRenderer
   }
 
   getHubs () {
-    return this.ask('getHubs', (response) => response.hubs)
+    return this.ask('getHubs').then((response) => response.hubs)
   }
 
   getActivities (hubUuid) {
-    return q.all([
-      this.ask('getActivities', { hubUuid }, (response) => response.activities),
-      this.ask('getCurrentActivityForHub', { hubUuid }, (response) => response.activityId)
+    return Promise.all([
+      this.ask('getActivities', { hubUuid }),
+      this.ask('getCurrentActivityForHub', { hubUuid })
     ])
       .then((results) => {
-        const activities = results[0]
-        const currentActivityId = results[1]
+        const activities = results[0].activities
+        const currentActivityId = results[1].activityId
 
         return activities.map((activity) => {
           if (activity.id === currentActivityId) {
