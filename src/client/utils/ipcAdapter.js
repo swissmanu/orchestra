@@ -22,7 +22,7 @@ class ClientIPCAdapter extends IPCAdapter {
         const currentActivityId = results[1].activityId
 
         return activities.map((activity) => {
-          if (activity.id === currentActivityId) {
+          if (activity.id !== '-1' && activity.id === currentActivityId) {
             activity.activityStatus = ACTIVITIY_STATUS.STARTED
           } else {
             activity.activityStatus = ACTIVITIY_STATUS.OFF
