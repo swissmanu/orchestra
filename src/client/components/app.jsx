@@ -1,8 +1,6 @@
 import React from 'react'
 import HubList from './hubList'
 
-require('../scss/app.scss')
-
 export default class App extends React.Component {
   render () {
     return (

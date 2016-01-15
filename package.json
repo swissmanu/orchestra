@@ -25,6 +25,7 @@
     "amp-is-number": "^1.0.1",
     "amp-is-string": "^1.0.1",
     "browser-request": "^0.3.3",
+    "classnames": "^2.2.3",
     "electron-ipc-adapter": "^1.0.2",
     "history": "^1.17.0",
     "node-uuid": "^1.4.7",
