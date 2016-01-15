@@ -1,11 +1,11 @@
 import React from 'react'
-import HubList from './hubList'
+import Hubs from './hubs'
 
 export default class App extends React.Component {
   render () {
     return (
       <section className='l-container'>
-        <HubList className='l-sidebar nav' />
+        <Hubs className='l-sidebar nav' />
         { this.props.children }
       </section>
     )

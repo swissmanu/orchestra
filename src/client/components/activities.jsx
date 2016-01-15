@@ -1,8 +1,8 @@
 import React from 'react'
 import Activity from './activity'
-import { triggerActivityWithIdForHubWithUuid } from '../../actions/activities'
+import { triggerActivityWithIdForHubWithUuid } from '../actions/activities'
 import { connect } from 'react-redux'
-import ACTIVITIY_STATUS from '../../utils/activityStatus'
+import ACTIVITIY_STATUS from '../utils/activityStatus'
 import isNumber from 'amp-is-number'
 
 function select (state) {

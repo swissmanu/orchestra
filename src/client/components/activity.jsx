@@ -1,6 +1,6 @@
 import React from 'react'
-import Spinner from '../spinner'
-import ACTIVITIY_STATUS from '../../utils/activityStatus'
+import ActivityIndicator from './activityIndicator'
+import ACTIVITIY_STATUS from '../utils/activityStatus'
 
 export default class Activity extends React.Component {
   renderIcon (activity) {
@@ -17,7 +17,7 @@ export default class Activity extends React.Component {
 
   render () {
     const activity = this.props.activity
-    const spinner = activity.activityStatus === ACTIVITIY_STATUS.STARTING ? <Spinner /> : undefined
+    const spinner = activity.activityStatus === ACTIVITIY_STATUS.STARTING ? <ActivityIndicator /> : undefined
 
     return (
       <span className='activity'>

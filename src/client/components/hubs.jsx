@@ -2,7 +2,7 @@ import React from 'react'
 import { connect } from 'react-redux'
 import { fetchHubsIfNeeded } from '../actions/hubs'
 import { Link } from 'react-router'
-import Spinner from './spinner'
+import ActivityIndicator from './activityIndicator'
 
 function select (state) {
   return {
@@ -11,7 +11,7 @@ function select (state) {
   }
 }
 
-class HubList extends React.Component {
+class Hubs extends React.Component {
   constructor (props) {
     super(props)
   }
@@ -34,7 +34,7 @@ class HubList extends React.Component {
               {
                 (() => {
                   if (activities != null && activities.isFetching) {
-                    return <Spinner />
+                    return <ActivityIndicator />
                   }
                 })()
               }
@@ -51,4 +51,4 @@ class HubList extends React.Component {
   }
 }
 
-export default connect(select)(HubList)
+export default connect(select)(Hubs)
