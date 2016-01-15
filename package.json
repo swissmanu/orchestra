@@ -1,5 +1,5 @@
 {
-  "name": "orchestra-client",
+  "name": "orchestra",
   "productName": "Orchestra",
   "version": "0.0.3",
   "description": "Control Harmony Hubs from your computer.",
@@ -8,10 +8,10 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/swissmanu/orchestra-client.git"
+    "url": "https://github.com/swissmanu/orchestra.git"
   },
   "bugs": {
-    "url": "https://github.com/swissmanu/orchestra-client/issues"
+    "url": "https://github.com/swissmanu/orchestra/issues"
   },
   "scripts": {
     "start": "electron src/electron",
@@ -19,7 +19,7 @@
     "dev": "NODE_ENV=development electron src/electron & webpack-dev-server --hot --inline --content-base src/client/",
     "package": "NODE_ENV=production node scripts/package.js"
   },
-  "homepage": "https://github.com/swissmanu/orchestra-client",
+  "homepage": "https://github.com/swissmanu/orchestra",
   "dependencies": {
     "amp-extend": "^1.0.1",
     "amp-is-number": "^1.0.1",
