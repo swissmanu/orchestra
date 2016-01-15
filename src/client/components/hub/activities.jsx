@@ -1,6 +1,5 @@
 import React from 'react'
 import Activity from './activity'
-import Spinner from '../spinner'
 import { triggerActivityWithIdForHubWithUuid } from '../../actions/activities'
 import { connect } from 'react-redux'
 import ACTIVITIY_STATUS from '../../utils/activityStatus'
@@ -11,9 +10,13 @@ function select (state) {
   const selectedHub = state.hubs.items
     .filter((hub) => hub.uuid === selectedHubUuid)
     .pop()
+  const currentActivity = (selectedHub.activities.items || [])
+    .filter((activity) => activity.activityStatus === ACTIVITIY_STATUS.STARTED)
+    .pop()
 
   return {
     activities: selectedHub.activities,
+    currentActivity,
     hubUuid: selectedHub.uuid
   }
 }
@@ -46,20 +49,11 @@ class Activities extends React.Component {
     this.props.dispatch(triggerActivityWithIdForHubWithUuid(activityId, hubUuid))
   }
 
-  _renderLoadingIndicator () {
-    return (
-      <div className='loading'>
-        <span className='loading-spinner'><Spinner /></span>
-        <span className='loading-text'>Fetching Activities...</span>
-      </div>
-    )
-  }
-
-  _renderActivityList (activities = []) {
+  _renderActivityList (activities = [], currentActivity = {}) {
     const self = this
     const hubUuid = self.props.hubUuid
 
-    if (!activities.some((activity) => activity.activityStatus === ACTIVITIY_STATUS.STARTED)) {
+    if (currentActivity.id === '-1') {
       activities = activities
         .filter((activity) => activity.id !== '-1')
     }
@@ -75,7 +69,7 @@ class Activities extends React.Component {
           }
 
           return (
-            <li key={ activity.id } className='item activity'>
+            <li key={ activity.id } className='item'>
               <a href='' className={ linkClassNames } onClick={ self._onClickActivity.bind(self, hubUuid, activity.id) }>
                 <Activity activity={ activity } />
               </a>
@@ -88,12 +82,12 @@ class Activities extends React.Component {
 
   render () {
     let content
-    const className = this.props.className + ' activities'
+    let className = 'activities'
+    const activitiesPresent = !this.props.activities.isFetching && Array.isArray(this.props.activities.items)
 
-    if (this.props.activities.isFetching) {
-      content = this._renderLoadingIndicator()
-    } else {
-      content = this._renderActivityList(this.props.activities.items)
+    if (activitiesPresent) {
+      content = this._renderActivityList(this.props.activities.items, this.props.currentActivity)
+      className += ' l-sidebar nav is-second-level'
     }
 
     return (
@@ -110,7 +104,8 @@ Activities.propTypes = {
   activities: React.PropTypes.shape({
     items: React.PropTypes.array,
     isFetching: React.PropTypes.bool
-  })
+  }),
+  currentActivity: React.PropTypes.object
 }
 
 module.exports = connect(select)(Activities)

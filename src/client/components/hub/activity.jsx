@@ -20,7 +20,7 @@ export default class Activity extends React.Component {
     const spinner = activity.activityStatus === ACTIVITIY_STATUS.STARTING ? <Spinner /> : undefined
 
     return (
-      <span>
+      <span className='activity'>
         { this.renderIcon(activity) }
         <span className='label'>{ activity.label }</span>
         { spinner }

@@ -1,4 +1,7 @@
 .activity {
+  display: flex;
+  justify-content: space-between;
+
   .icon {
     width: auto;
     height: 28px;

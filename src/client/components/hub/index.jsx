@@ -21,7 +21,7 @@ class Hub extends React.Component {
   render () {
     return (
       <div className='l-content l-container'>
-        <Activities className='l-sidebar nav is-second-level' />
+        <Activities />
         <div className='l-content'>Controls etc.</div>
       </div>
     )

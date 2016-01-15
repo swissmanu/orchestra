@@ -15,9 +15,10 @@
 
   .item {
     a {
-      display: block;
+      display: flex;
       padding: 10px;
       color: $nav-first-level-color;
+      justify-content: space-between;
 
       &.is-selected {
         color: $nav-first-level-selected-color;
