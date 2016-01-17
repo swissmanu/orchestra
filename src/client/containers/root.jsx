@@ -24,7 +24,7 @@ export default class Root extends React.Component {
           </Router>
           {
             (() => {
-              if (process.env.STATE_DEBUG != null) {
+              if (process.env.NODE_ENV !== 'production') {
                 const DevTools = require('./devTools')
                 return <DevTools />
               }

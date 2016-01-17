@@ -9,6 +9,7 @@ import {
 import { connect } from 'react-redux'
 import ACTIVITY_STATUS from '../utils/activityStatus'
 import isNumber from 'amp-is-number'
+import classnames from 'classnames'
 
 function selectHubForUuid (state, selectedHubUuid) {
   if (selectedHubUuid != null) {
@@ -81,7 +82,7 @@ class Activities extends React.Component {
   render () {
     const { selectedHub, activities, currentActivity } = this.props
     const hasStartedActivity = (activities.items || [])
-      .some((activity) => activity.activityStatus === ACTIVITY_STATUS.STARTED || activity.activityStatus === ACTIVITY_STATUS.STARTING)
+      .some((activity) => activity.activityStatus !== ACTIVITY_STATUS.OFF)
 
     if (selectedHub == null) {
       return (<div />)
@@ -94,11 +95,12 @@ class Activities extends React.Component {
     )
   }
 
-  renderList (activityItems = [], currentActivity = {}, selectedHub = {}) {
+  renderList (activityItems = [], currentActivity, selectedHub = {}) {
     const self = this
     const hubUuid = selectedHub.uuid
+    const isTurningOff = activityItems.some((activity) => activity.activityStatus === ACTIVITY_STATUS.TURNING_OFF)
 
-    if (currentActivity.id === '-1') {
+    if (currentActivity == null && !isTurningOff) {
       activityItems = activityItems
         .filter((activity) => activity.id !== '-1')
     }
@@ -106,15 +108,15 @@ class Activities extends React.Component {
     return (
       <ol className='l-sidebar nav is-second-level'>{
         activityItems.map((activity) => {
-          let linkClassNames
-
-          if (activity.activityStatus === ACTIVITY_STATUS.STARTING || activity.activityStatus === ACTIVITY_STATUS.STARTED) {
-            linkClassNames += ' is-selected' // reuse the nav components ability to show selected items
-          }
+          const isOnOrTurningOn = activity.id !== '-1' && (activity.activityStatus === ACTIVITY_STATUS.STARTING || activity.activityStatus === ACTIVITY_STATUS.STARTED)
+          const isPendingTurnOffActivity = activity.id === '-1' && isTurningOff
+          const linkClasses = classnames({
+            'is-selected': isOnOrTurningOn || isPendingTurnOffActivity
+          })
 
           return (
             <li key={ activity.id } className='item'>
-              <a href='' className={ linkClassNames } onClick={ self.onClickActivity.bind(self, hubUuid, activity.id) }>
+              <a href='' className={ linkClasses } onClick={ self.onClickActivity.bind(self, hubUuid, activity.id) }>
                 <Activity activity={ activity } />
               </a>
             </li>
