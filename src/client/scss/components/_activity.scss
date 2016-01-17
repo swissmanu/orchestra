@@ -1,13 +1,14 @@
 .activity {
   display: flex;
-  justify-content: space-between;
+  align-items: baseline;
 
   .icon {
-    width: auto;
-    height: 28px;
-    margin-right: 8px;
-    line-height: 26px;
-    font-size: 28px;
-    vertical-align: middle;
+    margin-right: $base-size;
+    flex: 0 0 $base-line-height;
+
+    &.custom-icon {
+      width: auto;
+      height: $base-line-height;
+    }
   }
 }

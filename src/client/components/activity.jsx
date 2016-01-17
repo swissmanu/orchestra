@@ -1,18 +1,22 @@
 import React from 'react'
 import ActivityIndicator from './activityIndicator'
 import ACTIVITIY_STATUS from '../utils/activityStatus'
+import classnames from 'classnames'
 
 export default class Activity extends React.Component {
   renderIcon (activity) {
-    let icon
+    const hasCustomIcon = activity.baseImageUri && activity.imageKey
+    const classes = classnames('icon', {
+      'ion-wifi': !hasCustomIcon && activity.id !== '-1',
+      'ion-power': !hasCustomIcon && activity.id === '-1',
+      'custom-icon': hasCustomIcon
+    })
 
-    if (activity.baseImageUri && activity.imageKey) {
-      icon = <img src={ this.props.activity.baseImageUri + this.props.activity.imageKey } className='icon' />
-    } else {
-      icon = <i className='fa fa-film icon'></i>
+    if (hasCustomIcon) {
+      const imageUrl = this.props.activity.baseImageUri + this.props.activity.imageKey
+      return (<img src={ imageUrl } className={ classes } />)
     }
-
-    return icon
+    return (<i className={ classes }></i>)
   }
 
   render () {

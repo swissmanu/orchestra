@@ -4,7 +4,6 @@ import { fetchHubsIfNeeded } from '../actions/hubs'
 import { Link } from 'react-router'
 import ActivityIndicator from './activityIndicator'
 import LookingForHubs from './lookingForHubs'
-import classnames from 'classnames'
 import { setSelectedHubByUuid } from '../actions/hubs'
 
 function select (state) {
@@ -35,7 +34,7 @@ class Hubs extends React.Component {
         const { activities } = hub
 
         return (
-          <li key={ hub.uuid } className='item hub'>
+          <li key={ hub.uuid } className='item'>
             <Link to={ '/hub/' + hub.uuid } onClick={ self.updateSelectedHub.bind(self, hub.uuid) } activeClassName='is-selected'>
               { hub.friendlyName }
               {
@@ -50,7 +49,7 @@ class Hubs extends React.Component {
         )
       })
 
-      return (<ul className={ this.props.className }>{ hubItems }</ul>)
+      return (<ul className='l-sidebar nav'>{ hubItems }</ul>)
     }
 
     return (<LookingForHubs />)

@@ -7,6 +7,7 @@ body {
 
   font-family: Frutiger, "Frutiger Linotype", Univers, Calibri, "Gill Sans", "Gill Sans MT", "Myriad Pro", Myriad, "DejaVu Sans Condensed", "Liberation Sans", "Nimbus Sans L", Tahoma, Geneva, "Helvetica Neue", Helvetica, Arial, sans-serif;
   font-size: $base-pixel-font-size;
+  line-height: $base-line-height;
 
   > #app {
     flex: 1 1 100%;

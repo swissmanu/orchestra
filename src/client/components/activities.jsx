@@ -82,9 +82,14 @@ class Activities extends React.Component {
     const { selectedHub, activities, currentActivity } = this.props
 
     if (selectedHub == null) {
-      return (<div>no hub</div>)
+      return (<div />)
     } else {
-      return (<div>{ this.renderList(activities.items, currentActivity, selectedHub) }</div>)
+      return (
+        <div className='l-content l-container'>
+          { this.renderList(activities.items, currentActivity, selectedHub) }
+          <div className='l-content' />
+        </div>
+      )
     }
   }
 
@@ -98,7 +103,7 @@ class Activities extends React.Component {
     }
 
     return (
-      <ol>{
+      <ol className='l-sidebar nav is-second-level'>{
         activityItems.map((activity) => {
           let linkClassNames
 
