@@ -20,13 +20,12 @@ export default class Root extends React.Component {
         <div>
           <Router>
             <Route path='/' component={ App } >
-              <IndexRoute component={ Welcome } />
               <Route path='/hub/:hubUuid' component={ Activities } />
             </Route>
           </Router>
           {
             (() => {
-              if (process.env.NODE_ENV !== 'production') {
+              if (process.env.STATE_DEBUG != null) {
                 const DevTools = require('./devTools')
                 return <DevTools />
               }

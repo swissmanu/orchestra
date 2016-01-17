@@ -3,6 +3,7 @@ import { connect } from 'react-redux'
 import { fetchHubsIfNeeded } from '../actions/hubs'
 import { Link } from 'react-router'
 import ActivityIndicator from './activityIndicator'
+import LookingForHubs from './lookingForHubs'
 import classnames from 'classnames'
 import { setSelectedHubByUuid } from '../actions/hubs'
 
@@ -28,7 +29,6 @@ class Hubs extends React.Component {
   render () {
     const self = this
     const { hubs } = this.props
-    let list
 
     if (Array.isArray(hubs.items)) {
       const hubItems = hubs.items.map((hub) => {
@@ -49,12 +49,11 @@ class Hubs extends React.Component {
           </li>
         )
       })
-      list = (<ul className={ this.props.className }>{ hubItems }</ul>)
-    } else {
-      list = (<p>No hubs found</p>)
+
+      return (<ul className={ this.props.className }>{ hubItems }</ul>)
     }
 
-    return list
+    return (<LookingForHubs />)
   }
 }
 
