@@ -67,7 +67,7 @@ function shouldFetchActivitiesForHubWithUuid (state, hubUuid) {
     .filter((hub) => hub.uuid === hubUuid)
     .pop()
 
-  if (!hub || !hub.activities || hub.activities.items.length === 0) { return true }
   if (hub.activities.isFetching) { return false }
+  if (hub.activities == null || hub.activities.items.length === 0) { return true }
   return hub.activities.didInvalidate
 }

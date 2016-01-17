@@ -28,11 +28,18 @@ export default function hubs (prevState = {}, action) {
         didInvalidate: false
       })
     case FETCH_HUBS_SUCCESS:
+      const hubs = action.hubs.map((hub) => extend(hub, {
+        activities: {
+          isFetching: false,
+          items: []
+        }
+      }))
+
       return extend(prevState, {
         isFetching: false,
         didInvalidate: false,
         lastUpdated: action.recivedAt,
-        items: action.hubs
+        items: hubs
       })
     case FETCH_HUBS_FAILED:
       return extend(prevState, {

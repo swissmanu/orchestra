@@ -5,7 +5,7 @@ export default class App extends React.Component {
   render () {
     return (
       <section className='l-container'>
-        <Hubs className='l-sidebar nav' />
+        <Hubs />
         { this.props.children }
       </section>
     )
