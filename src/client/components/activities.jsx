@@ -7,7 +7,7 @@ import {
 } from '../actions/activities'
 
 import { connect } from 'react-redux'
-import ACTIVITIY_STATUS from '../utils/activityStatus'
+import ACTIVITY_STATUS from '../utils/activityStatus'
 import isNumber from 'amp-is-number'
 
 function selectHubForUuid (state, selectedHubUuid) {
@@ -43,7 +43,7 @@ function selectActivitiesFromHub (hub) {
 function selectCurrentActivityFromHub (hub) {
   if (hub != null) {
     const currentActivity = (hub.activities.items || [])
-      .filter((activity) => activity.activityStatus === ACTIVITIY_STATUS.STARTED)
+      .filter((activity) => activity.activityStatus === ACTIVITY_STATUS.STARTED)
       .pop()
     return currentActivity
   }
@@ -80,17 +80,18 @@ class Activities extends React.Component {
 
   render () {
     const { selectedHub, activities, currentActivity } = this.props
+    const hasStartedActivity = (activities.items || [])
+      .some((activity) => activity.activityStatus === ACTIVITY_STATUS.STARTED || activity.activityStatus === ACTIVITY_STATUS.STARTING)
 
     if (selectedHub == null) {
       return (<div />)
-    } else {
-      return (
-        <div className='l-content l-container'>
-          { this.renderList(activities.items, currentActivity, selectedHub) }
-          <div className='l-content' />
-        </div>
-      )
     }
+    return (
+      <div className='l-content l-container'>
+        { this.renderList(activities.items, currentActivity, selectedHub) }
+        { (() => { if (hasStartedActivity) { return <div className='l-content' /> } })() }
+      </div>
+    )
   }
 
   renderList (activityItems = [], currentActivity = {}, selectedHub = {}) {
@@ -107,7 +108,7 @@ class Activities extends React.Component {
         activityItems.map((activity) => {
           let linkClassNames
 
-          if (activity.activityStatus === ACTIVITIY_STATUS.STARTING || activity.activityStatus === ACTIVITIY_STATUS.STARTED) {
+          if (activity.activityStatus === ACTIVITY_STATUS.STARTING || activity.activityStatus === ACTIVITY_STATUS.STARTED) {
             linkClassNames += ' is-selected' // reuse the nav components ability to show selected items
           }
 
