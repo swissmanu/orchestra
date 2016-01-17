@@ -1,0 +1,4 @@
+@function calc-rem($pixel-size) {
+  $rem-size: $pixel-size / $base-pixel-font-size;
+  @return #{$rem-size}rem;
+}

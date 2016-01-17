@@ -1,4 +1,8 @@
 @import
+  'utils/variables',
+  'utils/functions';
+
+@import
   'vendor/ionicons/ionicons';
 
 @import
@@ -14,4 +18,5 @@
   'components/nav',
   'components/activities',
   'components/activity',
-  'components/activityIndicator';
+  'components/activityIndicator',
+  'components/lookingForHubs';

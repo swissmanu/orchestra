@@ -1,0 +1,17 @@
+.looking-for-hubs {
+  $activity-indicator-font-size: 35px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  flex: 1 1 100%;
+
+  .content {
+    text-align: center;
+
+    .activity-indicator {
+      font-size: calc-rem($activity-indicator-font-size);
+    }
+  }
+}
