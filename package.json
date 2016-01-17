@@ -22,8 +22,6 @@
   "homepage": "https://github.com/swissmanu/orchestra",
   "dependencies": {
     "amp-is-number": "^1.0.1",
-    "amp-is-string": "^1.0.1",
-    "browser-request": "^0.3.3",
     "classnames": "^2.2.3",
     "electron-ipc-adapter": "^1.0.2",
     "history": "^1.17.0",
@@ -34,9 +32,7 @@
     "react-redux": "^4.0.6",
     "react-router": "^1.0.3",
     "redux": "^3.0.5",
-    "redux-simple-router": "^1.0.2",
-    "redux-thunk": "^1.0.3",
-    "reflux": "^0.3.0"
+    "redux-thunk": "^1.0.3"
   },
   "devDependencies": {
     "babel-core": "^6.3.26",
