@@ -13,8 +13,7 @@ import {
 } from '../actions/activities'
 import ACTIVITIY_STATUS from '../utils/activityStatus'
 
-const plainExtend = require('amp-extend')
-const extend = (...targets) => plainExtend.apply(this, [{}].concat(targets))
+import { extend, replaceItemAtIndex } from '../utils/stateManipulation'
 
 export default function hubs (prevState = {}, action) {
   switch (action.type) {
@@ -49,33 +48,28 @@ export default function hubs (prevState = {}, action) {
     case INVALIDATE_ACTIVITIES: {
       const index = lookupHubIndexByUuid(action.hubUuid, prevState.items)
       return extend(prevState, {
-        items: [
-          ...prevState.items.slice(0, index),
-          extend(prevState.items[index].activities, { didInvalidate: true }),
-          ...prevState.items.slice(index + 1)
-        ]
+        items: replaceItemAtIndex(prevState.items, index,
+          extend(prevState.items[index].activities, { didInvalidate: true })
+        )
       })
     }
     case FETCH_ACTIVITIES_REQUEST: {
       const index = lookupHubIndexByUuid(action.hubUuid, prevState.items)
       return extend(prevState, {
-        items: [
-          ...prevState.items.slice(0, index),
+        items: replaceItemAtIndex(prevState.items, index,
           extend(prevState.items[index], {
             activities: extend(prevState.items[index].activities, {
               isFetching: true,
               didInvalidate: false
             })
-          }),
-          ...prevState.items.slice(index + 1)
-        ]
+          })
+        )
       })
     }
     case FETCH_ACTIVITIES_SUCCESS: {
       const index = lookupHubIndexByUuid(action.hubUuid, prevState.items)
       return extend(prevState, {
-        items: [
-          ...prevState.items.slice(0, index),
+        items: replaceItemAtIndex(prevState.items, index,
           extend(prevState.items[index], {
             activities: extend(prevState.items[index].activities, {
               isFetching: false,
@@ -83,23 +77,20 @@ export default function hubs (prevState = {}, action) {
               lastUpdated: action.recivedAt,
               items: action.activities
             })
-          }),
-          ...prevState.items.slice(index + 1)
-        ]
+          })
+        )
       })
     }
     case FETCH_ACTIVITIES_FAILED: {
       const index = lookupHubIndexByUuid(action.hubUuid, prevState.items)
       return extend(prevState, {
-        items: [
-          ...prevState.items.slice(0, index),
+        items: replaceItemAtIndex(prevState.items, index,
           extend(prevState.items[index], {
             activities: extend(prevState.items[index].activities, {
               isFetching: false
             })
-          }),
-          ...prevState.items.slice(index + 1)
-        ]
+          })
+        )
       })
     }
 
@@ -108,8 +99,7 @@ export default function hubs (prevState = {}, action) {
       const { activityId, activityStatus } = action
 
       return extend(prevState, {
-        items: [
-          ...prevState.items.slice(0, index),
+        items: replaceItemAtIndex(prevState.items, index,
           extend(prevState.items[index], {
             activities: extend(prevState.items[index].activities, {
               items: prevState.items[index].activities.items.map((activity) => {
@@ -124,9 +114,8 @@ export default function hubs (prevState = {}, action) {
                 }
               })
             })
-          }),
-          ...prevState.items.slice(index + 1)
-        ]
+          })
+        )
       })
     }
 

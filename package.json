@@ -21,7 +21,6 @@
   },
   "homepage": "https://github.com/swissmanu/orchestra",
   "dependencies": {
-    "amp-extend": "^1.0.1",
     "amp-is-number": "^1.0.1",
     "amp-is-string": "^1.0.1",
     "browser-request": "^0.3.3",

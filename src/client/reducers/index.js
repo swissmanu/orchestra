@@ -1,10 +1,8 @@
 import { combineReducers } from 'redux'
-import hubs from './hubs'
 import selectedHub from './selectedHub'
-import { routeReducer } from 'redux-simple-router'
+import hubs from './hubs'
 
 export default combineReducers({
-  routing: routeReducer,
   selectedHub,
   hubs
 })
