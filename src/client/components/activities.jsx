@@ -117,7 +117,7 @@ class Activities extends React.Component {
           return (
             <li key={ activity.id } className='item'>
               <a href='' className={ linkClasses } onClick={ self.onClickActivity.bind(self, hubUuid, activity.id) }>
-                <Activity activity={ activity } />
+                <Activity activity={ activity } isHubTurningOff={ isTurningOff } />
               </a>
             </li>
           )

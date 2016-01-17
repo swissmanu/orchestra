@@ -27,9 +27,9 @@ export default class Activity extends React.Component {
   }
 
   render () {
-    const activity = this.props.activity
-    const { activityStatus } = activity
-    const isPending = (activityStatus === ACTIVITY_STATUS.STARTING)
+    const { activity, isHubTurningOff } = this.props
+    const { id, activityStatus } = activity
+    const isPending = (activityStatus === ACTIVITY_STATUS.STARTING || (id === '-1' && isHubTurningOff))
 
     return (
       <span className='activity'>
@@ -46,5 +46,6 @@ Activity.propTypes = {
     label: React.PropTypes.string.isRequired,
     baseImageUri: React.PropTypes.string,
     imageKey: React.PropTypes.string
-  })
+  }),
+  isHubTurningOff: React.PropTypes.bool
 }
