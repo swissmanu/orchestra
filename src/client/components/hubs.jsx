@@ -25,29 +25,29 @@ class Hubs extends React.Component {
     this.props.dispatch(setSelectedHubByUuid(hubUuid))
   }
 
+  renderHub (hub) {
+    const isFetching = hub.activities != null && hub.activities.isFetching
+    return (
+      <div className='hub'>
+        <span className='label'>{ hub.friendlyName }</span>
+        { (() => { if (isFetching) { return <ActivityIndicator /> } })() }
+      </div>
+    )
+  }
+
   render () {
     const self = this
     const { hubs } = this.props
 
     if (Array.isArray(hubs.items)) {
-      const hubItems = hubs.items.map((hub) => {
-        const { activities } = hub
-
-        return (
+      const hubItems = hubs.items.map((hub) => (
           <li key={ hub.uuid } className='item'>
             <Link to={ '/hub/' + hub.uuid } onClick={ self.updateSelectedHub.bind(self, hub.uuid) } activeClassName='is-selected'>
-              { hub.friendlyName }
-              {
-                (() => {
-                  if (activities != null && activities.isFetching) {
-                    return <ActivityIndicator />
-                  }
-                })()
-              }
+              { this.renderHub(hub) }
             </Link>
           </li>
         )
-      })
+      )
 
       return (<ul className='l-sidebar nav'>{ hubItems }</ul>)
     }

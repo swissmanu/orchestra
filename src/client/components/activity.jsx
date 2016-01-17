@@ -5,7 +5,7 @@ import classnames from 'classnames'
 
 export default class Activity extends React.Component {
   renderIcon (activity) {
-    const hasCustomIcon = activity.baseImageUri && activity.imageKey
+    const hasCustomIcon = false // activity.baseImageUri && activity.imageKey
     const classes = classnames('icon', {
       'ion-wifi': !hasCustomIcon && activity.id !== '-1',
       'ion-power': !hasCustomIcon && activity.id === '-1',
@@ -13,10 +13,15 @@ export default class Activity extends React.Component {
     })
 
     if (hasCustomIcon) {
-      const imageUrl = this.props.activity.baseImageUri + this.props.activity.imageKey
+      const imageUrl = activity.baseImageUri + activity.imageKey
       return (<img src={ imageUrl } className={ classes } />)
     }
     return (<i className={ classes }></i>)
+  }
+
+  renderLabel (activity) {
+    const text = activity.id === '-1' ? 'Turn Off' : activity.label
+    return <span className='label'>{ text }</span>
   }
 
   render () {
@@ -26,7 +31,7 @@ export default class Activity extends React.Component {
     return (
       <span className='activity'>
         { this.renderIcon(activity) }
-        <span className='label'>{ activity.label }</span>
+        { this.renderLabel(activity) }
         { spinner }
       </span>
     )
