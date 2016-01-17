@@ -125,10 +125,10 @@ class Activities extends React.Component {
 }
 
 Activities.propTypes = {
-  dispatch: React.PropTypes.func,
   params: React.PropTypes.shape({
     hubUuid: React.PropTypes.string
   }),
+  dispatch: React.PropTypes.func,
   activities: React.PropTypes.shape({
     items: React.PropTypes.array,
     isFetching: React.PropTypes.bool

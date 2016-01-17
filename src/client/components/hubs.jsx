@@ -56,4 +56,13 @@ class Hubs extends React.Component {
   }
 }
 
+Hubs.propTypes = {
+  dispatch: React.PropTypes.func,
+  hubs: React.PropTypes.shape({
+    items: React.PropTypes.array,
+    isFetching: React.PropTypes.bool
+  })
+}
+
+
 export default connect(select)(Hubs)

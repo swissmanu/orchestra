@@ -1,11 +1,10 @@
 import React from 'react'
 import { Provider } from 'react-redux'
-import { Router, Route, IndexRoute } from 'react-router'
+import { Router, Route } from 'react-router'
 
 import { configureStore } from '../store'
 
 import App from '../components/app'
-import Welcome from '../components/welcome'
 import Activities from '../components/activities'
 import stateDigestAdapter from '../utils/stateDigestAdapter'
 
