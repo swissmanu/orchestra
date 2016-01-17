@@ -3,7 +3,9 @@ import {
   FETCH_HUBS_SUCCESS,
   FETCH_HUBS_FAILED,
   INVALIDATE_HUBS,
-  UPDATE_HUB_FROM_STATE_DIGEST
+  UPDATE_HUB_FROM_STATE_DIGEST,
+  HUB_ONLINE,
+  HUB_OFFLINE
 } from '../actions/hubs'
 import {
   FETCH_ACTIVITIES_REQUEST,
@@ -17,6 +19,41 @@ import { extend, replaceItemAtIndex } from '../utils/stateManipulation'
 
 export default function hubs (prevState = {}, action) {
   switch (action.type) {
+    case HUB_ONLINE:
+      return extend(prevState, {
+        items: [prepareHubState(action.hub)].concat(prevState.items)
+      })
+    case HUB_OFFLINE: {
+      const index = lookupHubIndexByUuid(action.hub.uuid, prevState.items)
+      return extend(prevState, {
+        items: prevState.items.splice(index, 1)
+      })
+    }
+    case UPDATE_HUB_FROM_STATE_DIGEST: {
+      const index = lookupHubIndexByUuid(action.hubUuid, prevState.items)
+      const { activityId, activityStatus } = action.stateDigest
+
+      return extend(prevState, {
+        items: replaceItemAtIndex(prevState.items, index,
+          extend(prevState.items[index], {
+            activities: extend(prevState.items[index].activities, {
+              items: prevState.items[index].activities.items.map((activity) => {
+                if (activity.id === activityId) {
+                  return extend(activity, {
+                    activityStatus: activityStatus
+                  })
+                } else {
+                  return extend(activity, {
+                    activityStatus: ACTIVITIY_STATUS.OFF
+                  })
+                }
+              })
+            })
+          })
+        )
+      })
+    }
+
     case INVALIDATE_HUBS:
       return extend(prevState, {
         didInvalidate: true
@@ -27,18 +64,11 @@ export default function hubs (prevState = {}, action) {
         didInvalidate: false
       })
     case FETCH_HUBS_SUCCESS:
-      const hubs = action.hubs.map((hub) => extend(hub, {
-        activities: {
-          isFetching: false,
-          items: []
-        }
-      }))
-
       return extend(prevState, {
         isFetching: false,
         didInvalidate: false,
         lastUpdated: action.recivedAt,
-        items: hubs
+        items: action.hubs.map(prepareHubState)
       })
     case FETCH_HUBS_FAILED:
       return extend(prevState, {
@@ -94,31 +124,6 @@ export default function hubs (prevState = {}, action) {
       })
     }
 
-    case UPDATE_HUB_FROM_STATE_DIGEST: {
-      const index = lookupHubIndexByUuid(action.hubUuid, prevState.items)
-      const { activityId, activityStatus } = action
-
-      return extend(prevState, {
-        items: replaceItemAtIndex(prevState.items, index,
-          extend(prevState.items[index], {
-            activities: extend(prevState.items[index].activities, {
-              items: prevState.items[index].activities.items.map((activity) => {
-                if (activity.id === activityId) {
-                  return extend(activity, {
-                    activityStatus: activityStatus
-                  })
-                } else {
-                  return extend(activity, {
-                    activityStatus: ACTIVITIY_STATUS.OFF
-                  })
-                }
-              })
-            })
-          })
-        )
-      })
-    }
-
     default:
       return prevState
   }
@@ -136,4 +141,13 @@ function lookupHubIndexByUuid (hubUuid, hubs) {
   })
 
   return foundIndex
+}
+
+function prepareHubState (hub) {
+  return extend(hub, {
+    activities: {
+      isFetching: false,
+      items: []
+    }
+  })
 }

@@ -11,8 +11,12 @@ class ElectronIPCAdapter extends IPCAdapter {
 
     self.jsApi = new JsApi()
 
-    self.jsApi.on('discoveredHubs', (hubs) => {
-      self.tell('discoveredHubs', { hubs })
+    self.jsApi.on('hubOnline', (hub) => {
+      self.tell('hubOnline', { hub })
+    })
+
+    self.jsApi.on('hubOffline', (hub) => {
+      self.tell('hubOffline', { hub })
     })
 
     self.jsApi.on('stateDigest', function (stateDigestEvent) {

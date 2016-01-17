@@ -6,11 +6,11 @@ import { configureStore } from '../store'
 
 import App from '../components/app'
 import Activities from '../components/activities'
-import stateDigestAdapter from '../utils/stateDigestAdapter'
+import realTimeIpcAdapter from '../utils/realTimeIpcAdapter'
 
 // Create and setup the redux store:
 const store = configureStore()
-stateDigestAdapter(store.dispatch)
+realTimeIpcAdapter(store.dispatch)
 
 export default class Root extends React.Component {
   render () {
