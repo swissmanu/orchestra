@@ -32,7 +32,7 @@ app.on('window-all-closed', function () {
 app.on('ready', function () {
   // Create the browser window.
   mainWindow = new BrowserWindow({ width: 800, height: 600 })
-  const ipcAdapter = new IPCAdapter(ipcMain, mainWindow.webContents)
+  new IPCAdapter(ipcMain, mainWindow.webContents)
 
   // and load the index.html of the app.
   if (process.env.NODE_ENV === 'development') {
@@ -40,7 +40,6 @@ app.on('ready', function () {
     mainWindow.openDevTools()
   } else {
     mainWindow.loadURL('file://' + join(app.getAppPath(), 'dist', 'client.html'))
-    mainWindow.openDevTools()
   }
 
   // Emitted when the window is closed.
