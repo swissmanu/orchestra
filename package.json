@@ -1,7 +1,6 @@
 {
   "name": "orchestra",
   "productName": "Orchestra",
-  "version": "0.0.3",
   "description": "Control Harmony Hubs from your computer.",
   "main": "./dist/electron.js",
   "author": "Manuel Alabor <manuel@alabor.me>",
@@ -17,7 +16,8 @@
     "start": "electron src/electron",
     "test": "standard",
     "dev": "NODE_ENV=development electron src/electron & webpack-dev-server --hot --inline --content-base src/client/",
-    "package": "NODE_ENV=production node scripts/package.js"
+    "package": "NODE_ENV=production node scripts/package.js",
+    "semantic-release": "semantic-release pre"
   },
   "homepage": "https://github.com/swissmanu/orchestra",
   "dependencies": {
@@ -60,7 +60,9 @@
     "url-loader": "^0.5.7",
     "webpack": "^1.12.9",
     "webpack-dev-server": "^1.14.0",
-    "webpack-target-electron-renderer": "^0.3.0"
+    "webpack-target-electron-renderer": "^0.3.0",
+    "semantic-release": "^4.3.5",
+    "@semantic-release/last-release-git-tag": "git+https://github.com/swissmanu/last-release-git-tag.git#feat-initial-implementation"
   },
   "devEngines": {
     "node": "4.x || 5.x",
@@ -70,5 +72,8 @@
     "commitizen": {
       "path": "./node_modules/cz-conventional-changelog"
     }
+  },
+  "release": {
+    "getLastRelease": "./node_modules/@semantic-release/last-release-git-tag/dist/index.js"
   }
 }
