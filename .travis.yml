@@ -1,0 +1,33 @@
+sudo: false
+
+language: node_js
+
+os:
+- osx
+
+before_install:
+- curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.30.1/install.sh | bash
+- source ~/.bashrc
+
+script:
+- nvm install stable
+- nvm use stable
+- npm install
+- npm run semantic-release-prepare
+- npm run package
+
+after_success:
+- npm run semantic-release-publish
+
+deploy:
+  provider: releases
+  api_key:
+    secure:
+      "$GH_TOKEN":
+  file: "./release/darwin-x64/Orchestra-darwin-x64/Orchestra.app"
+  skip_cleanup: true
+  on:
+    tags: true
+env:
+  global:
+    secure: FRiq35XYnKOsMDPjk2gOzut0sTK+Pa16EWpZxJmcsfNctELQ/9pVMYuLQhYYZ4Ewf4qUV+h0+lkbsG0sZacyjvlcI7pluD43mn9TyP1N2KM4L+Hp6f941gtOvLuhN2UyVM5iYWPdrMHEhuOw0foxRy8gyZJ5dJE7IJmP/Xgar4I=

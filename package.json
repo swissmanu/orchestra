@@ -17,7 +17,8 @@
     "test": "standard",
     "dev": "NODE_ENV=development electron src/electron & webpack-dev-server --hot --inline --content-base src/client/",
     "package": "NODE_ENV=production node scripts/package.js",
-    "semantic-release": "semantic-release pre"
+    "semantic-release-prepare": "semantic-release pre",
+    "semantic-release-publish": "semantic-release post"
   },
   "homepage": "https://github.com/swissmanu/orchestra",
   "dependencies": {
