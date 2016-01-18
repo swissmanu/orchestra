@@ -1,12 +1,12 @@
 sudo: false
 
-os:
-  - osx
-language: node_js
-node_js:
-  - "4.1"
-
+os: osx
+language: ruby
 before_install:
+  - curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.30.1/install.sh | bash
+  - source ~/.bashrc
+  - nvm install 4
+  - nvm use 4
   - npm install -g npm^2.0.0
 
 install:
