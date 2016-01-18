@@ -1,23 +1,26 @@
 sudo: false
 
-language: node_js
-
 os:
-- osx
+  - osx
+language: node_js
+node_js:
+  - "4.1"
 
 before_install:
-- curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.30.1/install.sh | bash
-- source ~/.bashrc
+  - npm install -g npm^2.0.0
+
+install:
+  - npm install
+
+before_script:
+  - npm prune
 
 script:
-- nvm install stable
-- nvm use stable
-- npm install
-- npm run semantic-release-prepare
-- npm run package
+  - npm run semantic-release-prepare
+  - npm run package
 
 after_success:
-- npm run semantic-release-publish
+  - npm run semantic-release-publish
 
 deploy:
   provider: releases
