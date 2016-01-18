@@ -1,5 +1,5 @@
 # Orchestra
-[![Build Status](https://travis-ci.org/swissmanu/orchestra-client.svg)](https://travis-ci.org/swissmanu/orchestra-client) [![js-standard-style](https://img.shields.io/badge/code%20style-standard-brightgreen.svg)](http://standardjs.com/) [![Commitizen friendly](https://img.shields.io/badge/commitizen-friendly-brightgreen.svg)](http://commitizen.github.io/cz-cli/)
+[![Build Status](https://travis-ci.org/swissmanu/orchestra.svg)](https://travis-ci.org/swissmanu/orchestra) [![js-standard-style](https://img.shields.io/badge/code%20style-standard-brightgreen.svg)](http://standardjs.com/) [![Commitizen friendly](https://img.shields.io/badge/commitizen-friendly-brightgreen.svg)](http://commitizen.github.io/cz-cli/)
 
 Crossplatform desktop application to control Logitech Harmony Hubs.
 

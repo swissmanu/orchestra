@@ -1,5 +1,8 @@
-sudo: false
+branches:
+  only:
+    - master
 
+sudo: false
 os: osx
 language: ruby
 before_install:
@@ -16,6 +19,7 @@ before_script:
   - npm prune
 
 script:
+  - npm run test
   - npm run semantic-release-prepare
   - npm run package
 

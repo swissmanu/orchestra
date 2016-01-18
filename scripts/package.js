@@ -31,7 +31,7 @@ const DEFAULT_OPTS = {
     '/webpack\..*',
     '/README.md',
     '/.gitignore',
-    '/.DS_Store',
+    '/.DS_Store'
   ].concat(devDeps.map(name => `/node_modules/${name}($|/)`))
 }
 
@@ -111,7 +111,7 @@ function log (plat, arch) {
   }
 }
 
-function copyFile(src, dest) {
+function copyFile (src, dest) {
   const deferred = q.defer()
 
   const stream = fs.createReadStream(src).pipe(fs.createWriteStream(dest))

@@ -64,5 +64,4 @@ Hubs.propTypes = {
   })
 }
 
-
 export default connect(select)(Hubs)

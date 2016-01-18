@@ -32,7 +32,7 @@ app.on('window-all-closed', function () {
 app.on('ready', function () {
   // Create the browser window.
   mainWindow = new BrowserWindow({ width: 800, height: 600 })
-  new IPCAdapter(ipcMain, mainWindow.webContents)
+  new IPCAdapter(ipcMain, mainWindow.webContents)  // eslint-disable-line
 
   // and load the index.html of the app.
   if (process.env.NODE_ENV === 'development') {
