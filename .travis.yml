@@ -22,6 +22,7 @@ script:
   - npm run test
   - npm run semantic-release-prepare
   - npm run package
+  - export TRAVIS_TAG=test
 
 after_success:
   - npm run semantic-release-publish
@@ -32,6 +33,8 @@ deploy:
     secure:
       "$GH_TOKEN":
   file: "./release/darwin-x64/Orchestra-darwin-x64/Orchestra.app"
+  on:
+    tags: true
   skip_cleanup: true
 env:
   global:
