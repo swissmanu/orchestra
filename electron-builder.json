@@ -1,0 +1,20 @@
+{
+  "osx" : {
+    "title": "Orchestra",
+    "background": "assets/osx/installer.png",
+    "icon": "assets/osx/app-icon.icns",
+    "icon-size": 80,
+    "contents": [
+      { "x": 460, "y": 250, "type": "link", "path": "/Applications" },
+      { "x": 180, "y": 250, "type": "file" }
+    ]
+  },
+  "win" : {
+    "title" : "Orchestra",
+    "icon" : "assets/win/icon.ico"
+  },
+  "linux" : {
+    "title" : "Orchestra",
+    "icon" : "assets/linux/icon.ico"
+  }
+}
