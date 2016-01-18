@@ -7,7 +7,7 @@ before_install:
   - source ~/.bashrc
   - nvm install 4
   - nvm use 4
-  - npm install -g npm^2.0.0
+  - npm install npm -g
 
 install:
   - npm install
