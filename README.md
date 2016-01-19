@@ -12,6 +12,18 @@ When opening a new Pull Request make sure you point them to `develop`. Further e
 
 Thank you for your contribution!
 
+## Development
+Following `npm` commands are available:
+
+```bash
+$ npm run dev    # execute in development mode with hot react-hot-loader
+$ npm run clean  # clean dist/ and release/ directories
+$ npm run test   # execute tests and style checks
+$ npm run dist   # run webpack in production mode, generates files in dist/
+$ npm run pack   # package app only, without generating deployables
+$ npm run build  # package app and build deployables in release/ directory
+```
+
 ## Tech Stack
 * [orchestra-jsapi](https://github.com/swissmanu/orchestra-jsapi)
   * [harmonyhubjs-client](https://github.com/swissmanu/harmonyhubjs-client)
