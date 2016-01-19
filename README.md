@@ -4,6 +4,14 @@
 Crossplatform desktop application to control Logitech Harmony Hubs.
 
 
+## Contribution
+The `master` branch contains the latest stable release of the application.
+Development efforts are integrated with the `develop` branch first. Changes get then merged into `master` as soon as a new release should be published.
+
+When opening a new Pull Request make sure you point them to `develop`. Further ensure that your code follows [standard-js](http://standardjs.com/) style guidelines and you make use of proper commit messages. Orchestra loves [Commitizen](http://commitizen.github.io/cz-cli/), so take a look there and use `git cz` for the most simple workflow :-)
+
+Thank you for your contribution!
+
 ## Tech Stack
 * [orchestra-jsapi](https://github.com/swissmanu/orchestra-jsapi)
   * [harmonyhubjs-client](https://github.com/swissmanu/harmonyhubjs-client)
