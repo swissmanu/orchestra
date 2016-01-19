@@ -3,25 +3,27 @@
 'use strict'
 
 const os = require('os')
-const webpack = require('webpack')
-const cfg = require('../webpack.production.config.js')
 const packager = require('electron-packager')
-const del = require('del')
+const execSync = require('child_process').execSync
 const exec = require('child_process').exec
 const argv = require('minimist')(process.argv.slice(2))
-const pkg = require('../package.json')
-const devDeps = Object.keys(pkg.devDependencies)
-const q = require('q')
+const pkgElectron = require('../node_modules/electron-prebuilt/package.json')
+const pkgInfo = require('../package.json')
+const devDeps = Object.keys(pkgInfo.devDependencies)
 const fs = require('fs')
 
-const appName = argv.name || argv.n || pkg.productName
-const shouldUseAsar = argv.asar || argv.a || false
 const shouldBuildAll = argv.all || false
+const appVersion = argv.version || argv.v || pkgInfo.version
+const shaHash = execSync('git rev-parse HEAD').toString().substr(0, 7)
 
 const DEFAULT_OPTS = {
   dir: './',
-  name: appName,
-  asar: shouldUseAsar,
+  name: pkgInfo.productName,
+  version: pkgElectron.version,
+  'app-version': appVersion,
+  'build-version': shaHash,
+  asar: true,
+  prune: true,
   ignore: [
     '/test($|/)',
     '/tools($|/)',
@@ -41,53 +43,25 @@ if (icon) {
   DEFAULT_OPTS.icon = icon
 }
 
-const version = argv.version || argv.v
-
-if (version) {
-  DEFAULT_OPTS.version = version
-  startPack()
-} else {
-  // use the same version as the currently-installed electron-prebuilt
-  exec('npm list electron-prebuilt', (err, stdout) => {
-    if (err) {
-      DEFAULT_OPTS.version = '0.36.2'
-    } else {
-      DEFAULT_OPTS.version = stdout.split('electron-prebuilt@')[1].replace(/\s/g, '')
-    }
-
-    startPack()
-  })
-}
+startPack()
 
 function startPack () {
   console.log('start pack...')
-  webpack(cfg, (err, stats) => {
-    if (err) return console.error(err)
 
-    q.all([
-      del('release'),
-      copyFile('./src/client/index.html', './dist/client.html')
-    ])
-      .then(() => {
-        if (shouldBuildAll) {
-          // build for all platforms
-          const archs = ['ia32', 'x64']
-          const platforms = ['linux', 'win32', 'darwin']
+  if (shouldBuildAll) {
+    // build for all platforms
+    const archs = ['ia32', 'x64']
+    const platforms = ['linux', 'win32', 'darwin']
 
-          platforms.forEach(plat => {
-            archs.forEach(arch => {
-              pack(plat, arch, log(plat, arch))
-            })
-          })
-        } else {
-          // build for current platform only
-          pack(os.platform(), os.arch(), log(os.platform(), os.arch()))
-        }
+    platforms.forEach(plat => {
+      archs.forEach(arch => {
+        pack(plat, arch, log(plat, arch))
       })
-      .catch(err => {
-        console.error(err)
-      })
-  })
+    })
+  } else {
+    // build for current platform only
+    pack(os.platform(), os.arch(), log(os.platform(), os.arch()))
+  }
 }
 
 function pack (plat, arch, cb) {
@@ -109,14 +83,4 @@ function log (plat, arch) {
     if (err) return console.error(err)
     console.log(`${plat}-${arch} finished!`)
   }
-}
-
-function copyFile (src, dest) {
-  const deferred = q.defer()
-
-  const stream = fs.createReadStream(src).pipe(fs.createWriteStream(dest))
-  stream.on('finish', deferred.resolve)
-  stream.on('error', deferred.reject)
-
-  return deferred.promise
 }
