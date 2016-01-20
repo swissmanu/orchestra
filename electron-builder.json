@@ -1,8 +1,8 @@
 {
   "osx" : {
     "title": "Orchestra",
-    "background": "assets/osx/installer.png",
-    "icon": "assets/osx/app-icon.icns",
+    "background": "assets/darwin/installer.png",
+    "icon": "assets/darwin/app-icon.icns",
     "icon-size": 80,
     "contents": [
       { "x": 460, "y": 250, "type": "link", "path": "/Applications" },

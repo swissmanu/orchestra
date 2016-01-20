@@ -20,10 +20,10 @@
     "clean": "rm -fr dist release",
     "dist": "NODE_ENV=production webpack && cp ./src/client/index.html ./dist/client.html",
 
-    "pack": "npm run pack:osx",
-    "pack:osx": "NODE_ENV=production node scripts/package.js --os=darwin",
-    "build": "npm run build:osx",
-    "build:osx": "npm run pack:osx && electron-builder \"release/darwin-x64/Orchestra-darwin-x64/Orchestra.app\" --platform=osx --out=\"release/darwin-x64\" --config=electron-builder.json",
+    "pack": "npm run pack:darwin",
+    "pack:darwin": "NODE_ENV=production node scripts/package.js --platform=darwin",
+    "build": "npm run build:darwin",
+    "build:darwin": "npm run pack:darwin && electron-builder \"release/darwin-x64/Orchestra-darwin-x64/Orchestra.app\" --platform=osx --out=\"release/darwin-x64\" --config=electron-builder.json",
 
     "semantic-release-prepare": "semantic-release pre",
     "semantic-release-publish": "semantic-release post"

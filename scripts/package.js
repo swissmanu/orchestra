@@ -13,15 +13,15 @@ const devDeps = Object.keys(pkgInfo.devDependencies)
 const fs = require('fs')
 
 const shouldBuildAll = argv.all || false
+
 const appVersion = argv.version || argv.v || pkgInfo.version
 const shaHash = execSync('git rev-parse HEAD').toString().substr(0, 7)
 
-const DEFAULT_OPTS = {
+const commonOptions = {
   dir: './',
   name: pkgInfo.productName,
   version: pkgElectron.version,
   'app-version': appVersion,
-  'build-version': shaHash,
   asar: true,
   prune: true,
   ignore: [
@@ -37,50 +37,49 @@ const DEFAULT_OPTS = {
   ].concat(devDeps.map(name => `/node_modules/${name}($|/)`))
 }
 
-const icon = argv.icon || argv.i || 'app/app.icns'
-
-if (icon) {
-  DEFAULT_OPTS.icon = icon
-}
-
-startPack()
-
-function startPack () {
-  console.log('start pack...')
-
-  if (shouldBuildAll) {
-    // build for all platforms
-    const archs = ['ia32', 'x64']
-    const platforms = ['linux', 'win32', 'darwin']
-
-    platforms.forEach(plat => {
-      archs.forEach(arch => {
-        pack(plat, arch, log(plat, arch))
-      })
-    })
-  } else {
-    // build for current platform only
-    pack(os.platform(), os.arch(), log(os.platform(), os.arch()))
+const platformsToBuild = []
+const platforms = {
+  darwin: {
+    platform: 'darwin',
+    arch: 'x64',
+    icon: 'assets/darwin/app-icon.icns',
+    'build-version': shaHash
   }
+  // win: { },
+  // linux: { }
 }
 
-function pack (plat, arch, cb) {
-  // there is no darwin ia32 electron
-  if (plat === 'darwin' && arch === 'ia32') return
+if (argv.all) {
+  // Build for all platforms:
+  Object.keys(platforms)
+    .forEach((platformName) => platformsToBuild.push(platforms[platformName]))
+} else if (argv.platform) {
+  // Build for a specific platform
+  if (platforms[argv.platform] == null) {
+    console.error(`Could not find platform options for ${argv.platform}`)
+    process.exit(1)
+  }
+  platformsToBuild.push(platforms[argv.platform])
+}
 
-  const opts = Object.assign({}, DEFAULT_OPTS, {
-    platform: plat,
-    arch,
-    prune: true,
-    out: `release/${plat}-${arch}`
+if (platformsToBuild.length === 0) {
+  console.error('Use --platform to build for a specific platform or --all')
+  process.exit(1)
+}
+
+platformsToBuild.forEach((platformOptions) => {
+  const id = `${platformOptions.platform}-${platformOptions.arch}`
+  const platformSpecificOptions = Object.assign({}, commonOptions, platformOptions, {
+    out: `release/${id}`
   })
 
-  packager(opts, cb)
-}
-
-function log (plat, arch) {
-  return (err, filepath) => {
-    if (err) return console.error(err)
-    console.log(`${plat}-${arch} finished!`)
-  }
-}
+  console.log(`Pack ${id}...`)
+  packager(platformSpecificOptions, (err, filepath) => {
+    if (err) {
+      console.error(`Could not pack ${id}`)
+      console.error(err)
+      return
+    }
+    console.log(`${id} packed successfully to ${filepath}`)
+  })
+})
