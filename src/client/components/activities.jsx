@@ -1,6 +1,7 @@
 import React from 'react'
 
 import Activity from './activity'
+import ControlGroup from './controlGroup'
 import {
   fetchActivitiesForHubWithUuidIfNeeded,
   triggerActivityWithIdForHubWithUuid
@@ -90,7 +91,7 @@ class Activities extends React.Component {
     return (
       <div className='l-content l-container'>
         { this.renderList(activities.items, currentActivity, selectedHub) }
-        { (() => { if (hasStartedActivity) { return <div className='l-content' /> } })() }
+        { (() => { if (hasStartedActivity) { return this.renderControlGroups(currentActivity) } })() }
       </div>
     )
   }
@@ -124,6 +125,14 @@ class Activities extends React.Component {
         })
       }</ol>
     )
+  }
+
+  renderControlGroups (activity) {
+    if (activity != null) {
+      const controlGroups = activity.controlGroup
+        .map((controlGroup) => <ControlGroup key={ controlGroup.name } controlGroup={ controlGroup } />)
+      return (<div className='l-content'><ul>{ controlGroups }</ul></div>)
+    }
   }
 }
 
