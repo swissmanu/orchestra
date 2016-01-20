@@ -52,6 +52,14 @@ class ElectronIPCAdapter extends IPCResponder {
       self.jsApi.startActivityForHub(hubUuid, activityId)
       return Promise.resolve()
     })
+
+    self.registerTopic('executeControlAction', (requestPayload) => {
+      const action = requestPayload.action
+      const hubUuid = requestPayload.hubUuid
+
+      self.jsApi.executeAction(hubUuid, action)
+      return Promise.resolve()
+    })
   }
 }
 

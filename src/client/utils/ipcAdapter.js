@@ -36,6 +36,10 @@ class ClientIPCAdapter extends IPCResponder {
   startActivityForHub (activityId, hubUuid) {
     return this.tell('startActivityForHub', { hubUuid, activityId })
   }
+
+  executeControlAction (action, hubUuid) {
+    return this.tell('executeControlAction', { action, hubUuid })
+  }
 }
 
 const ipcAdapter = new ClientIPCAdapter(ipcRenderer)

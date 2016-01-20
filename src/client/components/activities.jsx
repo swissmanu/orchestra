@@ -6,6 +6,7 @@ import {
   fetchActivitiesForHubWithUuidIfNeeded,
   triggerActivityWithIdForHubWithUuid
 } from '../actions/activities'
+import { executeControlAction } from '../actions/controls'
 
 import { connect } from 'react-redux'
 import ACTIVITY_STATUS from '../utils/activityStatus'
@@ -130,9 +131,13 @@ class Activities extends React.Component {
   renderControlGroups (activity) {
     if (activity != null) {
       const controlGroups = activity.controlGroup
-        .map((controlGroup) => <ControlGroup key={ controlGroup.name } controlGroup={ controlGroup } />)
+        .map((controlGroup) => <ControlGroup key={ controlGroup.name } controlGroup={ controlGroup } onExecuteAction={ this.onExecuteAction.bind(this) }/>)
       return (<div className='l-content'><ul>{ controlGroups }</ul></div>)
     }
+  }
+
+  onExecuteAction (control, action) {
+    this.props.dispatch(executeControlAction(action, this.props.selectedHub.uuid))
   }
 }
 

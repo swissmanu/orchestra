@@ -5,8 +5,7 @@ class ControlGroup extends React.Component {
   render () {
     const { name } = this.props.controlGroup
     const controls = this.props.controlGroup['function']
-      .map((control) => <Control key={ `${name}-${control.name}` } control={ control } />)
-      .map((control) => (<li>{ control }</li>))
+      .map((control) => (<li key={ `${name}-${control.name}` }><Control control={ control } onExecuteAction={ this.onExecuteAction.bind(this, control) } /></li>))
 
     return (
         <li>{ name }
@@ -14,9 +13,14 @@ class ControlGroup extends React.Component {
         </li>
     )
   }
+
+  onExecuteAction (control, action) {
+    this.props.onExecuteAction(control, action)
+  }
 }
 
 ControlGroup.propTypes = {
+  onExecuteAction: React.PropTypes.func,
   controlGroup: React.PropTypes.shape({
     name: React.PropTypes.string,
     'function': React.PropTypes.array
