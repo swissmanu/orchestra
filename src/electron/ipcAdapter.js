@@ -1,9 +1,9 @@
 'use strict'
 
-const IPCAdapter = require('electron-ipc-adapter')
+const IPCResponder = require('electron-ipc-responder')
 const JsApi = require('orchestra-jsapi')
 
-class ElectronIPCAdapter extends IPCAdapter {
+class ElectronIPCAdapter extends IPCResponder {
   constructor (ipcMain, webContents) {
     super(webContents.send.bind(webContents), ipcMain.on.bind(ipcMain))
 

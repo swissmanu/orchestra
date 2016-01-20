@@ -32,7 +32,7 @@
   "dependencies": {
     "amp-is-number": "^1.0.1",
     "classnames": "^2.2.3",
-    "electron-ipc-adapter": "^1.0.2",
+    "electron-ipc-responder": "^1.0.0",
     "history": "^1.17.0",
     "node-uuid": "^1.4.7",
     "orchestra-jsapi": "^1.1.0",

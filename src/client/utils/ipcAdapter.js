@@ -1,9 +1,9 @@
 import ACTIVITIY_STATUS from './activityStatus'
-const IPCAdapter = require('electron-ipc-adapter')
+const IPCResponder = require('electron-ipc-responder')
 
 const ipcRenderer = window.require('electron').ipcRenderer
 
-class ClientIPCAdapter extends IPCAdapter {
+class ClientIPCAdapter extends IPCResponder {
   constructor (ipcRenderer) {
     super(ipcRenderer.send.bind(ipcRenderer), ipcRenderer.on.bind(ipcRenderer))
   }

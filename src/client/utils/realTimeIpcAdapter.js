@@ -1,4 +1,4 @@
-import IPCAdapter from 'electron-ipc-adapter'
+import IPCResponder from 'electron-ipc-responder'
 import {
   newHubOnline,
   knownHubOffline,
@@ -6,7 +6,7 @@ import {
 } from '../actions/hubs'
 
 const ipcRenderer = window.require('electron').ipcRenderer
-const realTimeIpcAdapter = new IPCAdapter(undefined, ipcRenderer.on.bind(ipcRenderer))
+const realTimeIpcAdapter = new IPCResponder(undefined, ipcRenderer.on.bind(ipcRenderer))
 
 export default function (dispatch) {
   realTimeIpcAdapter.registerTopic('hubOnline', (payload) => {
