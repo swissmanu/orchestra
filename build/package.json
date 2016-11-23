@@ -1,0 +1,23 @@
+{
+  "name": "orchestra",
+  "productName": "Orchestra",
+  "version": "1.0.1",
+  "description": "Control Harmony Hubs from your computer.",
+  "main": "electron.js",
+  "author": "Manuel Alabor <manuel@alabor.me>",
+  "license": "MIT",
+  "dependencies": {
+    "amp-is-number": "^1.0.1",
+    "classnames": "^2.2.3",
+    "electron-ipc-responder": "^1.0.0",
+    "history": "^1.17.0",
+    "node-uuid": "^1.4.7",
+    "orchestra-jsapi": "^1.3.0",
+    "react": "^0.14.3",
+    "react-dom": "^0.14.3",
+    "react-redux": "^4.0.6",
+    "react-router": "^1.0.3",
+    "redux": "^3.0.5",
+    "redux-thunk": "^1.0.3"
+  }
+}

@@ -61,6 +61,11 @@ class ElectronIPCAdapter extends IPCResponder {
       return Promise.resolve()
     })
   }
+
+  shutdown () {
+    this.jsApi.shutdown()
+    return Promise.resolve()
+  }
 }
 
 module.exports = ElectronIPCAdapter
