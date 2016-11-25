@@ -25,10 +25,10 @@ script:
 after_success:
   - >
     npm run semantic-release-prepare &&
-    npm run build &&
     export VERSION=$(cat package.json | grep version | head -1 | awk -F: '{ print $2 }' | sed 's/[",]//g' | tr -d '[[:space:]]') &&
     export TRAVIS_TAG=v$VERSION &&
     sed -i -e "s/\"version\": \"0.0.0\"/\"version\": \"$VERSION\"/g" tmp/package.json &&
+    npm run build &&
     npm run semantic-release-publish
 
 deploy:
