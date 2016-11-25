@@ -32,7 +32,7 @@ $ npm run dev     # execute in development mode with hot react-hot-loader
 $ npm run clean   # clean tmp/ and dist/ directories
 $ npm run test    # execute tests and style checks
 $ npm run prepare # run webpack in production mode, generates files in tmp/
-$ npm run build   # run clean & prepare, then build deployables for various platforms
+$ npm run build   # build deployables for various platforms (run prepare first)
 ```
 
 ## Tech Stack

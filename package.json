@@ -19,7 +19,7 @@
 
     "clean": "rm -fr tmp dist",
     "prepare": "NODE_ENV=production webpack && cp ./src/client/index.html ./tmp/client.html && cp ./build/package.json ./tmp",
-    "build": "npm run clean && npm run prepare && build --mac --x64",
+    "build": "build --mac --x64",
 
     "semantic-release-prepare": "semantic-release pre",
     "semantic-release-publish": "semantic-release post"
