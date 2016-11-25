@@ -20,23 +20,27 @@ before_script:
 
 script:
   - npm run test
-  - npm run dist
+  - npm run prepare
 
 after_success:
   - >
     npm run semantic-release-prepare &&
     npm run build &&
-    export TRAVIS_TAG=v$(cat package.json | grep version | head -1 | awk -F: '{ print $2 }' | sed 's/[",]//g' | tr -d '[[:space:]]') &&
+    export VERSION=$(cat package.json | grep version | head -1 | awk -F: '{ print $2 }' | sed 's/[",]//g' | tr -d '[[:space:]]') &&
+    export TRAVIS_TAG=v$VERSION &&
+    sed -i -e 's/"version": "0.0.0"/"version": "$VERSION"/g' tmp/package.json
     npm run semantic-release-publish
 
 deploy:
   provider: releases
+  skip_cleanup: true
+  file_glob: true
+  file: "./dist/*/*.zip"
   api_key:
     secure: ${GH_TOKEN}
-  file: "./release/darwin-x64/Orchestra.dmg"
   on:
     tags: true
-  skip_cleanup: true
+
 env:
   global:
     secure: FRiq35XYnKOsMDPjk2gOzut0sTK+Pa16EWpZxJmcsfNctELQ/9pVMYuLQhYYZ4Ewf4qUV+h0+lkbsG0sZacyjvlcI7pluD43mn9TyP1N2KM4L+Hp6f941gtOvLuhN2UyVM5iYWPdrMHEhuOw0foxRy8gyZJ5dJE7IJmP/Xgar4I=

@@ -28,12 +28,11 @@ Thank you for your contribution!
 Following `npm` commands are available:
 
 ```bash
-$ npm run dev    # execute in development mode with hot react-hot-loader
-$ npm run clean  # clean dist/ and release/ directories
-$ npm run test   # execute tests and style checks
-$ npm run dist   # run webpack in production mode, generates files in dist/
-$ npm run pack   # package app only, without generating deployables
-$ npm run build  # package app and build deployables in release/ directory
+$ npm run dev     # execute in development mode with hot react-hot-loader
+$ npm run clean   # clean tmp/ and dist/ directories
+$ npm run test    # execute tests and style checks
+$ npm run prepare # run webpack in production mode, generates files in tmp/
+$ npm run build   # run clean & prepare, then build deployables for various platforms
 ```
 
 ## Tech Stack
