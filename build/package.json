@@ -1,7 +1,7 @@
 {
   "name": "orchestra",
   "productName": "Orchestra",
-  "version": "1.0.1",
+  "version": "0.0.0",
   "description": "Control Harmony Hubs from your computer.",
   "main": "electron.js",
   "author": "Manuel Alabor <manuel@alabor.me>",
