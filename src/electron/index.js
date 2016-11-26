@@ -8,9 +8,6 @@ const join = require('path').join
 const IPCAdapter = require('./ipcAdapter')
 let ipcAdapter
 
-// Report crashes to our server.
-require('crash-reporter').start()
-
 if (process.env.NODE_ENV === 'development') {
   require('electron-debug')()
 }

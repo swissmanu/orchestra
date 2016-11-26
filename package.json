@@ -51,7 +51,7 @@
     "electron-builder": "^8.6.0",
     "electron-debug": "^0.5.1",
     "electron-packager": "^8.3.0",
-    "electron-prebuilt": "^0.36.2",
+    "electron-prebuilt": "^1.4.8",
     "extract-text-webpack-plugin": "^0.9.1",
     "file-loader": "^0.8.5",
     "minimist": "^1.2.0",
